@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Manjari:wght@400;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Cinzel:wght@600;750;900&family=Bricolage+Grotesque:wght@700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-display: "Plus Jakarta Sans", "Outfit", "Space Grotesk", "Montserrat", system-ui, sans-serif;
+  --font-malayalam: "Manjari", "Gayathri", sans-serif;
+  --font-syne: "Syne", sans-serif;
+  --font-cinzel: "Cinzel", serif;
+  --font-bricolage: "Bricolage Grotesque", sans-serif;
+
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0%); }
+    to   { transform: translateX(-50%); }
+  }
+}
+
+/* Logo animations — defined in regular CSS scope so browsers recognise them */
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes logo-glow {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(251,191,36,0.10), 0 0 12px 2px rgba(251,191,36,0.06); }
+  50%       { box-shadow: 0 0 10px 3px rgba(251,191,36,0.22), 0 0 20px 5px rgba(244,63,94,0.08); }
+}
+
+/* ============================================================
+   MOBILE SCROLL PERFORMANCE OPTIMIZATIONS
+   ============================================================ */
+
+/* Smooth, hardware-accelerated scroll for the entire page */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Promote the root to its own GPU compositing layer to reduce
+   paint work during scroll */
+body {
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce animation cost on mobile: replace backdrop-blur with
+   cheaper solid backgrounds via media query when user prefers
+   reduced motion OR on low-power (touch) devices via a class */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Give animated/fixed elements their own GPU layer so they
+   don't trigger full-page repaints on scroll */
+header,
+nav,
+.animate-marquee,
+[class*="animate-pulse"],
+[class*="animate-spin"],
+[class*="animate-bounce"] {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Isolate fixed/sticky header from scroll paint */
+header {
+  contain: layout style;
+}
+
+/* Cap backdrop-blur blur radius on mobile to reduce GPU load */
+@media (max-width: 768px) {
+  [class*="backdrop-blur-md"],
+  [class*="backdrop-blur-lg"],
+  [class*="backdrop-blur-xl"],
+  [class*="backdrop-blur-2xl"] {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+}
+
+/* Images — prevent layout shift and enable hardware decode */
+img {
+  content-visibility: auto;
+  decoding: async;
+}
+
+/* Marquee strip — run on compositor thread */
+.animate-marquee {
+  will-change: transform;
+}
+
+/* Touch-friendly tap targets */
+button, a {
+  touch-action: manipulation;
+}
+
+/* Hide scrollbars but keep scrolling functionality */
+.cml-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.cml-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+

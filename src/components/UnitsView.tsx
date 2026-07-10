@@ -1,0 +1,196 @@
+import React from 'react';
+import { User, Phone, MapPin } from 'lucide-react';
+import { ParishUnit } from '../types';
+import { motion } from 'motion/react';
+
+interface UnitsViewProps {
+  units: ParishUnit[];
+  dbData?: any;
+  onSaveDatabase?: (updatedData: any, action: string, target: string) => Promise<boolean>;
+}
+
+export default function UnitsView({ units }: UnitsViewProps) {
+  return (
+    <div className="w-full bg-slate-50 min-h-screen pt-4 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Ambient background orbs for premium feel - hidden on mobile to prevent scroll lag */}
+      <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-rose-400/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="hidden md:block absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-400/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,transparent_100%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto flex flex-col gap-4 text-left relative z-10">
+        
+        {/* Title Presentation */}
+        <div className="flex flex-col items-center text-center gap-3 max-w-4xl mx-auto mt-1">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center justify-center px-6 py-2 bg-amber-50/80 backdrop-blur-sm border border-amber-200/50 rounded-full shadow-sm"
+          >
+            <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 tracking-[0.3em] uppercase font-sans">
+              Parish Units
+            </span>
+          </motion.div>
+
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="font-cinzel font-black text-5xl sm:text-6xl md:text-7xl text-slate-900 tracking-wide leading-tight drop-shadow-sm"
+          >
+            Shakha <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-600 via-yellow-600 to-amber-700">Directory</span>
+          </motion.h2>
+
+          {/* Elegant Divider */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center justify-center w-full max-w-xs mt-1 opacity-80 gap-3"
+          >
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+            <div className="w-1.5 h-1.5 rotate-45 bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+          </motion.div>
+        </div>
+
+        {/* Directory Card Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12 items-stretch mt-1">
+          {units.length === 0 ? (
+            <div className="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-slate-200">
+              <User className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+              <p className="text-slate-400 font-medium text-sm">No parish units available.</p>
+            </div>
+          ) : (
+            units.map((un, idx) => {
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + (idx * 0.05) }}
+                  key={un.id}
+                  className="bg-white/70 backdrop-blur-md rounded-[32px] border border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 text-left"
+                >
+                  {/* Card Cover Picture */}
+                  <div role="img" aria-label={un.name} className="h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+                    {/* Subtle gradient just for the top badge visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent z-10" />
+                    {/* Shimmer skeleton shown while image loads */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse z-0" />
+                    <img
+                      src={un.bgPhoto}
+                      alt={un.name}
+                      loading="lazy"
+                      decoding="async"
+                      onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                      className={`w-full h-full absolute inset-0 z-0 opacity-0 transition-opacity duration-700 transform transition-transform duration-700 ${
+                        un.name.includes('Koduvely') ? 'object-cover object-top scale-100 group-hover:scale-110' :
+                        un.name.includes('Mundanmudy') ? 'object-cover object-bottom scale-125 group-hover:scale-150' :
+                        un.name.includes('Thennathoor') ? 'object-cover object-[center_60%] scale-100 group-hover:scale-105' :
+                        'object-cover object-center scale-100 group-hover:scale-110'
+                      }`}
+                    />
+                    
+                    <div className="absolute top-4 right-4 z-20">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-[9px] uppercase font-bold tracking-widest text-white shadow-lg">
+                        {un.patronSaint}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Elegant Readonly Contact View */}
+                  <div className="p-6 flex flex-col flex-1 gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
+                    
+                    {/* Unit Title Block */}
+                    <div className="flex flex-col gap-2.5">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-100/50 border border-amber-200/60 rounded-md w-fit">
+                         <MapPin className="w-3 h-3 text-amber-600" />
+                         <span className="text-[9px] font-sans font-black tracking-widest text-amber-700 uppercase">Unit</span>
+                      </div>
+                      <h4 className="font-serif font-bold text-lg text-slate-800 leading-tight" title={un.name}>
+                        {un.name}
+                      </h4>
+                    </div>
+
+                    <div className="h-px w-full bg-gradient-to-r from-slate-200/80 via-slate-200/80 to-transparent" />
+
+                    {/* Leader List */}
+                    <div className="flex flex-col gap-4">
+                      
+                      {/* CML Director Section */}
+                      <div className="flex flex-col group/leader">
+                        <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
+                          Director
+                        </label>
+                        <div className="flex flex-col">
+                          <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-rose-600">
+                            {un.directorName || <span className="text-slate-400 italic font-normal">No Director Assigned</span>}
+                          </div>
+                          {un.directorPhone && (
+                            <a
+                              href={`tel:${un.directorPhone}`}
+                              className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-rose-500 mt-1 transition-colors"
+                            >
+                              <Phone className="w-3 h-3" />
+                              <span>{un.directorPhone}</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-60" />
+
+                      {/* CML Joint Director Section */}
+                      <div className="flex flex-col group/leader">
+                        <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
+                          Joint Director
+                        </label>
+                        <div className="flex flex-col">
+                          <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-rose-600">
+                            {un.jointDirectorName || <span className="text-slate-400 italic font-normal">No Joint Director</span>}
+                          </div>
+                          {un.jointDirectorPhone && (
+                            <a
+                              href={`tel:${un.jointDirectorPhone}`}
+                              className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-rose-500 mt-1 transition-colors"
+                            >
+                              <Phone className="w-3 h-3" />
+                              <span>{un.jointDirectorPhone}</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-60" />
+
+                      {/* CML President Section */}
+                      <div className="flex flex-col group/leader">
+                        <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
+                          President
+                        </label>
+                        <div className="flex flex-col">
+                          <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-amber-600">
+                            {un.presidentName || <span className="text-slate-400 italic font-normal">No President Assigned</span>}
+                          </div>
+                          {un.presidentPhone && (
+                            <a
+                              href={`tel:${un.presidentPhone}`}
+                              className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-amber-500 mt-1 transition-colors"
+                            >
+                              <Phone className="w-3 h-3" />
+                              <span>{un.presidentPhone}</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

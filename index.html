@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png" />
+    <title>CML Kaliyar Mekhala – Cherupushpa Mission League</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="msvalidate.01" content="0E22B0743967ABC909D84E3B6C41EE4E" />
+    <meta name="description" content="Official website of CML Kaliyar Mekhala – Cherupushpa Mission League. Stay updated with news, events, circulars, registrations, and gallery from Kaliyar Mekhala." />
+    <meta name="keywords" content="CML, Cherupushpa Mission League, Kaliyar Mekhala, Catholic Mission, Syro Malabar Youth, Kothamangalam Diocese, CML Kerala" />
+    <meta name="author" content="CML Kaliyar Mekhala" />
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.cmlkaliyarmekhala.live/" />
+    <meta property="og:site_name" content="CML Kaliyar Mekhala" />
+    <meta property="og:title" content="CML Kaliyar Mekhala – Cherupushpa Mission League" />
+    <meta property="og:description" content="Official website of CML Kaliyar Mekhala – Cherupushpa Mission League. Join us in faith and action." />
+    <meta property="og:image" content="https://www.cmlkaliyarmekhala.live/logo.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="CML Kaliyar Mekhala Logo" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="CML Kaliyar Mekhala – Cherupushpa Mission League" />
+    <meta name="twitter:description" content="Official website of CML Kaliyar Mekhala. Stay updated with news, events, and gallery." />
+    <meta name="twitter:image" content="https://www.cmlkaliyarmekhala.live/logo.png" />
+
+    <!-- Robots and Canonical -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.cmlkaliyarmekhala.live/" />
+
+    <!-- JSON-LD: Organization Schema (enables Google logo in search results) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "CML Kaliyar Mekhala",
+      "alternateName": "Cherupushpa Mission League Kaliyar Mekhala",
+      "url": "https://www.cmlkaliyarmekhala.live/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.cmlkaliyarmekhala.live/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "description": "Official website of CML Kaliyar Mekhala – Cherupushpa Mission League. A Catholic youth mission organization under the Kothamangalam Diocese.",
+      "sameAs": []
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite Schema (enables Google Sitelinks search box) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CML Kaliyar Mekhala",
+      "url": "https://www.cmlkaliyarmekhala.live/"
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Anti-FOUC: hide elements that are responsive-hidden BEFORE Tailwind loads.
+         Without this, they flash visible for ~100ms on every page load. -->
+    <style>
+      /* Sub-badges (Kaliyar Mekhala, 13 Shakhas, Golden Star) — hidden below lg (1024px) */
+      #header-sub-badges { display: none; }
+      @media (min-width: 1024px) {
+        #header-sub-badges { display: flex; }
+      }
+      /* Desktop pill nav — hidden below md (768px) */
+      #desktop-pill-nav-container { display: none; }
+      @media (min-width: 768px) {
+        #desktop-pill-nav-container { display: flex; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+<script>window.onerror = function(msg, url, lineNo, columnNo, error) { document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:20px;">' + msg + ' ' + url + ' ' + lineNo + ':' + columnNo + '<br/>' + (error && error.stack) + '</div>'; return false; };</script>
+<script>const oldErr = console.error; console.error = function(...args) { oldErr(...args); document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:20px;max-height:100vh;overflow:auto;">' + args.map(a => typeof a === 'object' ? (a.stack || JSON.stringify(a)) : a).join(' ') + '</div>'; };</script>
