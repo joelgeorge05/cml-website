@@ -69,10 +69,10 @@ export default function UnitsView({ units }: UnitsViewProps) {
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: 0.1 + (idx * 0.05) }}
  key={un.id}
- className="bg-white/70 rounded-[32px] border border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 text-left"
+ className="bg-white/70 rounded-[32px] border border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 text-left"
  >
  {/* Card Cover Picture */}
- <div role="img" aria-label={un.name} className="h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+ <div role="img" aria-label={un.name} className="h-48 rounded-t-[32px] bg-slate-100 relative overflow-hidden flex items-center justify-center">
  {/* Subtle gradient just for the top badge visibility */}
  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent z-10" />
  {/* Shimmer skeleton shown while image loads */}
@@ -98,7 +98,7 @@ export default function UnitsView({ units }: UnitsViewProps) {
  </div>
 
  {/* Elegant Readonly Contact View */}
- <div className="p-6 flex flex-col grow gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
+ <div className="p-6 rounded-b-[32px] flex flex-col flex-1 gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
  
  {/* Unit Title Block */}
  <div className="flex flex-col gap-2.5">
