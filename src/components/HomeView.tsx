@@ -209,6 +209,18 @@ export default function HomeView({
  return () => clearInterval(timer);
  }, [activeSlides.length, intervalSeconds]);
 
+ // Lock body scroll when modal is active
+ useEffect(() => {
+ if (activeMessageId) {
+ document.body.style.overflow = 'hidden';
+ } else {
+ document.body.style.overflow = 'unset';
+ }
+ return () => {
+ document.body.style.overflow = 'unset';
+ };
+ }, [activeMessageId]);
+
  const currentIndex = currentSlideIndex % activeSlides.length;
  const currentSlide = activeSlides[currentIndex] || activeSlides[0];
 
