@@ -98,7 +98,7 @@ export default function UnitsView({ units }: UnitsViewProps) {
  </div>
 
  {/* Elegant Readonly Contact View */}
- <div className="p-6 rounded-b-[32px] flex flex-col h-full gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
+ <div className="p-6 rounded-b-[32px] flex flex-col gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
  
  {/* Unit Title Block */}
  <div className="flex flex-col gap-2.5">
