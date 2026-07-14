@@ -11,48 +11,65 @@ export async function getCroppedImg(
   imageSrc: string,
   pixelCrop: { x: number; y: number; width: number; height: number },
   rotation = 0,
-  flip = { horizontal: false, vertical: false }
+  flip = { horizontal: false, vertical: false },
+  maxSize = 800 // default max size to compress and speed up loading
 ): Promise<Blob | null> {
   const image = await createImage(imageSrc)
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
+  
+  // First canvas: Rotate and flip the entire source image
+  const tempCanvas = document.createElement('canvas')
+  const tempCtx = tempCanvas.getContext('2d')
+  if (!tempCtx) return null
 
-  if (!ctx) {
-    return null
+  tempCanvas.width = image.width
+  tempCanvas.height = image.height
+
+  tempCtx.translate(image.width / 2, image.height / 2)
+  tempCtx.rotate((rotation * Math.PI) / 180)
+  tempCtx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
+  tempCtx.translate(-image.width / 2, -image.height / 2)
+  tempCtx.drawImage(image, 0, 0)
+
+  // Determine scaled dimensions to prevent massive file sizes
+  let targetWidth = pixelCrop.width
+  let targetHeight = pixelCrop.height
+
+  if (pixelCrop.width > maxSize || pixelCrop.height > maxSize) {
+    const aspectRatio = pixelCrop.width / pixelCrop.height
+    if (aspectRatio > 1) {
+      targetWidth = maxSize
+      targetHeight = Math.round(maxSize / aspectRatio)
+    } else {
+      targetHeight = maxSize
+      targetWidth = Math.round(maxSize * aspectRatio)
+    }
   }
 
-  // set canvas size to match the bounding box
-  canvas.width = image.width
-  canvas.height = image.height
+  // Second canvas: Crop the region and scale it down
+  const finalCanvas = document.createElement('canvas')
+  const finalCtx = finalCanvas.getContext('2d')
+  if (!finalCtx) return null
 
-  // translate canvas context to a central location to allow rotating and flipping around the center
-  ctx.translate(image.width / 2, image.height / 2)
-  ctx.rotate((rotation * Math.PI) / 180)
-  ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
-  ctx.translate(-image.width / 2, -image.height / 2)
+  finalCanvas.width = targetWidth
+  finalCanvas.height = targetHeight
 
-  // draw rotated image
-  ctx.drawImage(image, 0, 0)
-
-  // extract the cropped image
-  const data = ctx.getImageData(
+  // Draw the crop area from the temp canvas onto the final canvas with scaling
+  finalCtx.drawImage(
+    tempCanvas,
     pixelCrop.x,
     pixelCrop.y,
     pixelCrop.width,
-    pixelCrop.height
+    pixelCrop.height,
+    0,
+    0,
+    targetWidth,
+    targetHeight
   )
 
-  // set canvas width to final desired crop size
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
-
-  // paste generated rotate image at the top left corner
-  ctx.putImageData(data, 0, 0)
-
-  // As a blob
+  // Export as WebP format at 80% quality for optimal file sizes and speed
   return new Promise((resolve) => {
-    canvas.toBlob((file) => {
+    finalCanvas.toBlob((file) => {
       resolve(file)
-    }, 'image/jpeg', 0.9)
+    }, 'image/webp', 0.8)
   })
 }

@@ -93,6 +93,23 @@ export interface DownloadItem {
   description?: string;
 }
 
+export interface BloodDonor {
+  id: string;
+  name: string;
+  blood_group: string;
+  phone: string;
+  parish: string;
+  last_donated_date: string | null;
+  is_available: boolean;
+  house_name?: string;
+  alt_phone?: string;
+  permanent_address?: string;
+  dob?: string;
+  employment_status?: string;
+  employment_address?: string;
+  created_at?: string;
+}
+
 export interface ActivityLog {
   id: string;
   userEmail: string;
@@ -129,7 +146,7 @@ export interface PortalSettings {
 export interface UserRole {
   email: string;
   name: string;
-  role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor';
+  role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin';
   lastActive?: string;
   password?: string;
 }
@@ -201,3 +218,4 @@ export const getShakhaNameByCode = (code: string, dbUnits?: any[]): string => {
   }
   return code;
 };
+

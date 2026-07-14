@@ -1,8 +1,8 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import logoImg from '../assets/images/logo.png';
+import logoImg from '../assets/images/logo.webp';
 import {
   Sparkles,
   Users,
@@ -252,7 +252,7 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
       setDraftParticipants([]);
       setMessage({
         type: 'success',
-        text: 'ðŸŽ‰ Registration Batch successfully verified and processed!'
+        text: '🎉 Registration Batch successfully verified and processed!'
       });
     } else {
       setMessage({ type: 'error', text: 'Failed to synchronize registration with the server.' });
@@ -326,57 +326,69 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
 
       // We'll wrap all pages drawing in a standard function
       const drawHeaderAndFooter = (pageDoc: typeof doc, pageNum: number, totalPages: number) => {
-        // Red Top Border Accent Accent
-        pageDoc.setFillColor(159, 18, 57); // rose-800
-        pageDoc.rect(15, 10, 180, 1.5, 'F');
+        // Modern Full Width Top Bar
+        pageDoc.setFillColor(225, 29, 72); // rose-600
+        pageDoc.rect(0, 0, 210, 3, 'F');
 
-        // Draw Logo Image if successfully loaded, otherwise fallback
+        // Draw Logo Image
         if (imgElement) {
           try {
-            pageDoc.addImage(imgElement, 'JPEG', 15, 14, 18, 18);
+            pageDoc.addImage(imgElement, 'JPEG', 15, 12, 22, 22);
           } catch (logoErr) {
             console.warn("Logo image drawing failed", logoErr);
           }
         } else {
           // Draw a soft backup crimson circle badge if we can't find logoImg
           pageDoc.setFillColor(251, 113, 133); // rose-400
-          pageDoc.circle(24, 23, 9, 'F');
+          pageDoc.circle(26, 23, 11, 'F');
           pageDoc.setTextColor(255, 255, 255);
           pageDoc.setFont('helvetica', 'bold');
-          pageDoc.setFontSize(8);
-          pageDoc.text('CML', 24, 24, { align: 'center' });
+          pageDoc.setFontSize(9);
+          pageDoc.text('CML', 26, 24, { align: 'center' });
         }
 
-        // Title text
+        // Vertical divider
+        pageDoc.setDrawColor(226, 232, 240); // slate-200
+        pageDoc.setLineWidth(0.5);
+        pageDoc.line(42, 12, 42, 34);
+
+        // Title text - Line 1
         pageDoc.setTextColor(15, 23, 42); // slate-900
         pageDoc.setFont('helvetica', 'bold');
-        pageDoc.setFontSize(13);
-        pageDoc.text('CHERUPUSHPA MISSION LEAGUE KALIYAR MEKHALA', 36, 21);
+        pageDoc.setFontSize(15);
+        pageDoc.text('CHERUPUSHPA MISSION LEAGUE', 47, 19);
 
-        pageDoc.setFont('helvetica', 'bold');
-        pageDoc.setTextColor(159, 18, 57); // rose-700
-        pageDoc.setFontSize(8.5);
-        pageDoc.text('Chosen Registration', 36, 27);
+        // Title text - Line 2
+        pageDoc.setTextColor(71, 85, 105); // slate-600
+        pageDoc.setFontSize(11);
+        pageDoc.text('KALIYAR MEKHALA', 47, 25);
+
+        // Badge for Chosen Registration
+        pageDoc.setFillColor(225, 29, 72); // rose-600
+        pageDoc.roundedRect(47, 29, 44, 6, 1.5, 1.5, 'F');
+        pageDoc.setTextColor(255, 255, 255);
+        pageDoc.setFontSize(7.5);
+        pageDoc.text('CHOSEN REGISTRATION', 69, 33.2, { align: 'center' });
 
         // Beautiful divider line
         pageDoc.setDrawColor(226, 232, 240); // slate-200
-        pageDoc.setLineWidth(0.3);
-        pageDoc.line(15, 36, 195, 36);
+        pageDoc.setLineWidth(0.5);
+        pageDoc.line(15, 40, 195, 40);
 
-        // Parish detail box with rounded rectangle shifted up slightly
+        // Parish detail box with rounded rectangle shifted down slightly
         pageDoc.setFillColor(248, 250, 252); // slate-50
-        pageDoc.roundedRect(15, 41, 180, 16, 2, 2, 'F');
+        pageDoc.roundedRect(15, 45, 180, 16, 2, 2, 'F');
         pageDoc.setDrawColor(241, 245, 249); // slate-100
-        pageDoc.roundedRect(15, 41, 180, 16, 2, 2, 'D');
+        pageDoc.roundedRect(15, 45, 180, 16, 2, 2, 'D');
 
         pageDoc.setFontSize(7.5);
         pageDoc.setTextColor(148, 163, 184); // slate-400
-        pageDoc.text('PARISH UNIT', 19, 46);
+        pageDoc.text('PARISH UNIT', 19, 50);
 
         pageDoc.setFontSize(11);
         pageDoc.setTextColor(15, 23, 42); // slate-900
         pageDoc.setFont('helvetica', 'bold');
-        pageDoc.text(printData.parishName.toUpperCase(), 19, 53);
+        pageDoc.text(printData.parishName.toUpperCase(), 19, 57);
 
         // Page info at bottom
         pageDoc.setDrawColor(226, 232, 240); // slate-200
@@ -387,7 +399,7 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
         pageDoc.setFontSize(7.5);
         pageDoc.setTextColor(148, 163, 184); // slate-400
         const dateStr = new Date().toLocaleDateString('en-GB');
-        pageDoc.text(`Generated on ${dateStr} â€¢ Kaliyar Mekhala Official Ledger Connection`, 15, 281);
+        pageDoc.text(`Generated on ${dateStr} • Kaliyar Mekhala Official Ledger Connection`, 15, 281);
         pageDoc.text(`Page ${pageNum} of ${totalPages}`, 195, 281, { align: 'right' });
       };
 
@@ -423,7 +435,7 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
 
         drawHeaderAndFooter(doc, pNum, totalPages);
 
-        let y = 63; // Starting Y coordinate for table elements on current page (shifted up by 6)
+        let y = 67; // Starting Y coordinate for table elements on current page
         drawTableHeaders(doc, y);
         y += 8;
 
@@ -482,7 +494,21 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
           y += 8;
         });
 
-
+        // Add Signature block at the end of the last page
+        if (pNum === totalPages) {
+          // Ensure we have enough space, else move it up slightly if table is full (max y is ~231, page is 297)
+          const signatureY = Math.min(y + 25, 260); 
+          
+          doc.setDrawColor(148, 163, 184); // slate-400
+          doc.setLineWidth(0.3);
+          // Draw a small line for the signature
+          doc.line(145, signatureY - 6, 195, signatureY - 6);
+          
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(9);
+          doc.setTextColor(51, 65, 85); // slate-700
+          doc.text('Signature of the Director', 195, signatureY, { align: 'right' });
+        }
       }
 
       const filename = `CML_Registry_${printData.list[0]?.shakha || 'General'}_${new Date().toISOString().split('T')[0]}.pdf`;
@@ -559,14 +585,14 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
             {message.type === 'success' ? (
               <CheckCircle className="w-5 h-5 flex-shrink-0 text-emerald-600 mt-0.5" />
             ) : (
-              <span className="text-lg flex-shrink-0 mt-0.5">âš ï¸</span>
+              <span className="text-lg flex-shrink-0 mt-0.5">⚠️</span>
             )}
             <div>
               <span className="font-semibold text-sm block">{message.text}</span>
               {message.type === 'success' && justRegisteredBatch && (
                 <div className="mt-4 p-4 bg-emerald-500/5 border border-emerald-500/25 rounded-2xl flex flex-col gap-3">
                   <p className="text-xs text-emerald-805 font-medium">
-                    ðŸ“¥ You can download and save your official Diocese compliant Registration PDF slip receipt right now. Keep this copy for the parish files as proof of registration.
+                    📥 You can download and save your official Diocese compliant Registration PDF slip receipt right now. Keep this copy for the parish files as proof of registration.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <button
@@ -962,7 +988,7 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
                 <ul className="list-disc list-inside space-y-1 text-amber-950 font-medium">
                   <li>You can register multiple delegates at once.</li>
                   <li>Click <strong>"Verify & Submit Batch"</strong> at bottom once finished to transmit.</li>
-                  <li>Download the diocese compliance list immediately upon submission!</li>
+                  <li>Download the mekhala compliance list immediately upon submission!</li>
                 </ul>
               </div>
             </div>
@@ -1060,7 +1086,7 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
               <div className="sticky top-0 bg-slate-100 border-b border-slate-200 px-6 py-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center rounded-t-3xl z-10">
                 <div className="text-left">
                   <p className="text-[11px] text-[#059669] font-bold">
-                    ðŸ’¡ Click "DOWNLOAD PDF" below to save.
+                    💡 Click "DOWNLOAD PDF" below to save.
                   </p>
                 </div>
                 
@@ -1166,16 +1192,12 @@ export default function ChosenView({ dbData, onSaveDatabase }: ChosenViewProps) 
                         <span className="text-[10px] text-slate-400 font-medium italic">(Signature & Seal)</span>
                       </div>
 
-                      <div className="text-right text-[10px] text-slate-400 font-semibold">
-                        <p>Generated on {new Date().toLocaleDateString('en-GB')}</p>
-                        <p className="mt-0.5">Kaliyar Mekhala Official Ledger</p>
-                      </div>
                     </div>
                   </div>
 
                   {/* Official Base layout credits matching screenshot */}
                   <div className="absolute bottom-6 left-10 right-10 flex justify-between text-[9px] font-bold text-slate-400 border-t border-slate-100 pt-3">
-                    <span>Generated on {new Date().toLocaleDateString('en-GB')} â€¢ Page 1 of 1</span>
+                    <span>Generated on {new Date().toLocaleDateString('en-GB')} • Page 1 of 1</span>
                   </div>
 
                 </div>

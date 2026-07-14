@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -42,17 +42,19 @@ export default function DownloadsView({ downloads }: DownloadsViewProps) {
    }
   ];
 
-  const [selectedFileCategory, setSelectedFileCategory] = useState<'All' | 'circular' | 'form'>('circular');
+  const [selectedFileCategory, setSelectedFileCategory] = useState<string>('circular');
   const [searchQuery, setSearchQuery] = useState('');
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
   const filterTabs = [
-   { id: 'circular', label: 'Circulars 📜' },
-   { id: 'form', label: 'Forms 📋' },
+   { id: 'circular', label: 'Circulars' },
+   { id: 'form', label: 'Forms & Resources' },
    { id: 'All', label: 'All Files' }
   ];
 
-  const filteredDownloads = circularDownloads.filter((item) => {
+  console.log('allDownloads:', [...circularDownloads, ...downloads]);
+  const allDownloads = [...circularDownloads, ...downloads];
+  const filteredDownloads = allDownloads.filter((item) => {
    const matchesCategory = selectedFileCategory === 'All' || item.category === selectedFileCategory;
    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -217,3 +219,8 @@ export default function DownloadsView({ downloads }: DownloadsViewProps) {
     </div>
   );
 }
+
+
+
+
+

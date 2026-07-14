@@ -13,14 +13,48 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { createClient } from '@supabase/supabase-js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const DB_FILE = path.join(process.cwd(), 'db.json');
 
-app.use(helmet());
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://ayoqlfospgjcklucurig.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabase = supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://ayoqlfospgjcklucurig.supabase.co",
+        "https://images.unsplash.com",
+        "https://*.supabase.co",
+        "https://*.unsplash.com",
+      ],
+      connectSrc: [
+        "'self'",
+        "https://ayoqlfospgjcklucurig.supabase.co",
+        "https://*.supabase.co",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "wss://ayoqlfospgjcklucurig.supabase.co",
+      ],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"],
+    },
+  },
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -530,11 +564,31 @@ app.post('/api/login', loginLimiter, (req, res) => {
   const allUsers = [...defaultUsers, ...dynamicUsers];
 
   const cleanEmail = email.trim().toLowerCase();
-  const user = allUsers.find(
+  let user = allUsers.find(
     u => u.email.trim().toLowerCase() === cleanEmail
   );
 
+  let isValid = false;
   if (user && bcrypt.compareSync(password, user.password)) {
+    isValid = true;
+  } else if (!user && cleanEmail.endsWith('@shakha.cml')) {
+    // Fallback for auto-generated Shakha accounts
+    const shakhaId = cleanEmail.split('@')[0].toUpperCase();
+    const unit = db.units?.find((u: any) => u.id.toUpperCase() === shakhaId);
+    if (unit) {
+      if (unit.password && unit.password.startsWith('$2')) {
+        if (bcrypt.compareSync(password, unit.password)) {
+          user = { email: cleanEmail, name: `${unit.name} Shakha`, role: 'shakha' };
+          isValid = true;
+        }
+      } else if (password === `CML${shakhaId}`) {
+        user = { email: cleanEmail, name: `${unit.name} Shakha`, role: 'shakha' };
+        isValid = true;
+      }
+    }
+  }
+
+  if (isValid && user) {
     const accessToken = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
     res.json({
       success: true,
@@ -552,15 +606,32 @@ app.post('/api/login', loginLimiter, (req, res) => {
 
 // Logs helper
 function appendLog(userEmail: string, action: string, target: string) {
+  const timestamp = new Date().toISOString();
+  const id = `log-${Date.now()}`;
+  const user_email = userEmail || 'Anonymous';
+
+  if (supabase) {
+    supabase.from('activity_logs').insert([{
+      id,
+      user_email,
+      action,
+      target,
+      timestamp
+    }]).then(({ error }) => {
+      if (error) console.error('Failed to log to supabase:', error);
+    });
+  }
+
+  // Also write locally as a fallback
   const data = loadDatabase();
   const newLog = {
-    id: `log-${Date.now()}`,
-    userEmail: userEmail || 'Anonymous',
+    id,
+    userEmail: user_email,
     action,
     target,
-    timestamp: new Date().toISOString()
+    timestamp
   };
-  data.logs = [newLog, ...(data.logs || [])].slice(0, 100); // maintain last 100 logs
+  data.logs = [newLog, ...(data.logs || [])].slice(0, 100);
   saveDatabase(data);
 }
 
@@ -592,6 +663,27 @@ app.post('/api/save-database', saveLimiter, authenticateToken, (req, res) => {
   } else if (!updatedData.users && db.users) {
     // Keep users from the db if not present in the payload
     updatedData.users = db.users;
+  }
+
+  // Preserve and hash shakha passwords
+  if (updatedData.units && Array.isArray(updatedData.units)) {
+    updatedData.units = updatedData.units.map((updatedUnit: any) => {
+      const existingUnit = db.units?.find((u: any) => u.id === updatedUnit.id);
+      
+      let finalPassword = existingUnit ? existingUnit.password : undefined;
+      if (updatedUnit.password && !updatedUnit.password.startsWith('$2')) {
+        finalPassword = bcrypt.hashSync(updatedUnit.password, 10);
+      } else if (updatedUnit.password && updatedUnit.password.startsWith('$2')) {
+        finalPassword = updatedUnit.password;
+      }
+      
+      return {
+        ...updatedUnit,
+        password: finalPassword
+      };
+    });
+  } else if (!updatedData.units && db.units) {
+    updatedData.units = db.units;
   }
 
   saveDatabase(updatedData);

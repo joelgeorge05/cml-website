@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Newspaper, Search, ArrowRight, Compass, Megaphone, Bookmark } from 'lucide-react';
 import { NewsItem, Announcement } from '../types';
-import thereseImg from '../assets/images/st_therese.png';
+import thereseImg from '../assets/images/st_therese.webp';
 
 interface NewsAnnouncementsViewProps {
   news: NewsItem[];
@@ -53,7 +53,7 @@ export default function NewsAnnouncementsView({ news, announcements }: NewsAnnou
                 className="w-full h-full object-cover scale-102"
               />
               <div className="absolute top-4 left-4 bg-rose-600 text-white text-[10px] font-black uppercase px-3 py-1.5 rounded-full tracking-wider shadow z-10 animate-pulse">
-                ðŸŽ™ï¸ Spotlight Publication
+                🎙️ Spotlight Publication
               </div>
             </div>
 
@@ -62,7 +62,7 @@ export default function NewsAnnouncementsView({ news, announcements }: NewsAnnou
                 <span className="text-[10px] font-extrabold uppercase bg-amber-50 text-amber-700 border border-amber-100 px-2 py-1 rounded">
                   Category: {featuredNews.category}
                 </span>
-                <span className="text-xs text-slate-400 font-mono">ðŸ“… {featuredNews.date}</span>
+                <span className="text-xs text-slate-400 font-mono">📅 {featuredNews.date}</span>
               </div>
 
               <h3 className="font-sans font-black text-lg md:text-xl text-slate-900 leading-tight">
@@ -75,7 +75,7 @@ export default function NewsAnnouncementsView({ news, announcements }: NewsAnnou
 
               <div className="border-t border-slate-100 pt-3 flex items-center gap-2 text-slate-400 text-xs mt-2">
                 <span>By: Mekhala Editorial Desk</span>
-                <span>â€¢</span>
+                <span>•</span>
                 <span>Diocese of Kothamangalam approved</span>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function NewsAnnouncementsView({ news, announcements }: NewsAnnou
           <div className="lg:col-span-4 flex flex-col gap-6">
             
             <h4 className="font-sans font-bold text-slate-700 text-sm uppercase tracking-wide border-b border-slate-200 pb-2">
-              ðŸ“¢ Central Announcements
+              📢 Central Announcements
             </h4>
 
             <div className="flex flex-col gap-4 text-left">
