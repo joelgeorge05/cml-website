@@ -1850,8 +1850,8 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               <h4 className="font-bold text-slate-700">Identity Details</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-slate-600">
                 <div>ðŸ§‘â€ðŸ’» Logged user: <strong>{currentUser.name}</strong></div>
-                <div>ðŸ‘¤ Security Role: <strong>{currentUser.role}</strong></div>
-                <div>âœ‰ï¸ Primary Email: <strong>{currentUser.email}</strong></div>
+                <div>👤 Security Role: <strong>{currentUser.role}</strong></div>
+                <div>✉️ Primary Email: <strong>{currentUser.email}</strong></div>
               </div>
               {isEditorOnly && (
                 <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-500 text-[11px] font-semibold leading-normal">
@@ -1872,7 +1872,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs">
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-bold text-slate-600">ðŸš¨ Support Desk Phone</label>
+                <label className="font-bold text-slate-600">🚨 Support Desk Phone</label>
                 <input
                   type="text"
                   value={settingsForm.supportDesk}
@@ -1882,7 +1882,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-bold text-slate-600">âœ‰ï¸ General Hotline Email</label>
+                <label className="font-bold text-slate-600">✉️ General Hotline Email</label>
                 <input
                   type="email"
                   value={settingsForm.email}
@@ -1892,7 +1892,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-bold text-slate-600">ðŸŒŸ Motto Primary (Malayalam script)</label>
+                <label className="font-bold text-slate-600">🌟 Motto Primary (Malayalam script)</label>
                 <input
                   type="text"
                   value={settingsForm.mottoPrimary}
@@ -1902,7 +1902,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-bold text-slate-600">ðŸ”¥ Motto Secondary (Malayalam script)</label>
+                <label className="font-bold text-slate-600">🔥 Motto Secondary (Malayalam script)</label>
                 <input
                   type="text"
                   value={settingsForm.mottoSecondary}
@@ -1912,7 +1912,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left md:col-span-2">
-                <label className="font-bold text-slate-600">ðŸŽ¨ Hero Intro Text Block (Malayalam Description)</label>
+                <label className="font-bold text-slate-600">🎨 Hero Intro Text Block (Malayalam Description)</label>
                 <textarea
                   rows={3}
                   value={settingsForm.heroIntro}
@@ -1994,7 +1994,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             <div className="flex flex-col gap-4 bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs text-left">
               <div className="flex flex-col gap-1 border-b border-slate-900 pb-3">
                 <h4 className="font-sans font-extrabold text-slate-900 text-sm flex items-center gap-2">
-                  <span>ðŸŽ¬ Hero Banner Rotating Slideshow</span>
+                  <span>🎬 Hero Banner Rotating Slideshow</span>
                   <span className="text-[10px] bg-amber-500/10 text-amber-400 font-normal px-2.5 py-0.5 rounded-full border border-amber-500/20">
                     Premium Carousel Setup
                   </span>
@@ -2552,7 +2552,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ‘¤ CML Director Name</label>
+                <label className="font-bold text-slate-600">👤 CML Director Name</label>
                 <input
                   type="text"
                   value={unitForm.directorName || ''}
@@ -2566,7 +2566,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ“ž CML Director Contact</label>
+                <label className="font-bold text-slate-600">📞 CML Director Contact</label>
                 <input
                   type="text"
                   value={unitForm.directorPhone || ''}
@@ -2580,7 +2580,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ‘¤ CML Joint Director Name</label>
+                <label className="font-bold text-slate-600">👤 CML Joint Director Name</label>
                 <input
                   type="text"
                   value={unitForm.jointDirectorName || ''}
@@ -2594,7 +2594,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ“ž CML Joint Director Contact</label>
+                <label className="font-bold text-slate-600">📞 CML Joint Director Contact</label>
                 <input
                   type="text"
                   value={unitForm.jointDirectorPhone || ''}
@@ -2608,7 +2608,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ‘¤ CML President Name</label>
+                <label className="font-bold text-slate-600">👤 CML President Name</label>
                 <input
                   type="text"
                   value={unitForm.presidentName || ''}
@@ -2622,7 +2622,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ“ž CML President Contact</label>
+                <label className="font-bold text-slate-600">📞 CML President Contact</label>
                 <input
                   type="text"
                   value={unitForm.presidentPhone || ''}
@@ -2710,7 +2710,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
               <div className="md:col-span-2 text-left">
-                <h4 className="font-bold text-slate-700 text-sm">ðŸ“… Add / Edit Calendar Schedule</h4>
+                <h4 className="font-bold text-slate-700 text-sm">📅 Add / Edit Calendar Schedule</h4>
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
@@ -2980,7 +2980,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs flex flex-col gap-4">
               <div className="text-left font-bold text-slate-700">
-                ðŸ”” Publish Urgent Bulletin Notification
+                🔔 Publish Urgent Bulletin Notification
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
@@ -3002,8 +3002,8 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     onChange={(e) => setAnnForm({ ...annForm, type: e.target.value as any })}
                     className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-900 font-bold"
                   >
-                    <option value="urgent">ðŸš¨ Critical / Urgent (Priority banner scroll)</option>
-                    <option value="regular">ðŸ“‹ Standard notice / regular</option>
+                    <option value="urgent">🚨 Critical / Urgent (Priority banner scroll)</option>
+                    <option value="regular">📋 Standard notice / regular</option>
                   </select>
                 </div>
 
@@ -3016,7 +3016,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     className="w-4 h-4 text-fuchsia-600 focus:ring-indigo-500 border-slate-300 bg-slate-50 rounded"
                   />
                   <label htmlFor="sticky-check-ann" className="font-bold text-slate-700 cursor-pointer text-xs">
-                    ðŸ“Œ Keep sticky on announcement margins
+                    📌 Keep sticky on announcement margins
                   </label>
                 </div>
               </div>
@@ -3192,7 +3192,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 text-left font-bold text-slate-350">
-                ðŸ“„ Register Document assets
+                📄 Register Document assets
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
@@ -3213,9 +3213,9 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   onChange={(e) => setDownloadForm({ ...downloadForm, category: e.target.value as any })}
                   className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-900 font-bold"
                 >
-                  <option value="circular">ðŸ“œ Official Circular Banner</option>
-                  <option value="form">ðŸ“‹ Dynamic Registration Form</option>
-                  <option value="report">ðŸ“Š Diocese Midterm Report</option>
+                  <option value="circular">📜 Official Circular Banner</option>
+                  <option value="form">📋 Dynamic Registration Form</option>
+                  <option value="report">📊 Diocese Midterm Report</option>
                 </select>
               </div>
 
@@ -3268,7 +3268,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                 <div key={d.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex items-center gap-3 text-left truncate">
                     <span className="p-2 bg-slate-50 text-amber-500 font-bold rounded-lg">
-                      ðŸ“„
+                      📄
                     </span>
                     <div className="flex flex-col truncate">
                       <span className="font-bold text-slate-800 truncate">{d.title}</span>
