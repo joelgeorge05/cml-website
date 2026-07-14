@@ -1601,7 +1601,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
         {/* Console database state summary */}
         <div className="mx-3 mb-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 hidden lg:block text-[10px] text-slate-500 leading-normal">
-          <span className="text-slate-400 font-bold block mb-1">ðŸ—„ï¸ PERSISTENCE DATA</span>
+          <span className="text-slate-400 font-bold block mb-1">🗄️ PERSISTENCE DATA</span>
           <span>Saving to server: <strong className="text-slate-300">db.json</strong></span>
           <span className="block mt-1">Status: Active container connection</span>
         </div>
@@ -1849,13 +1849,13 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs flex flex-col gap-3">
               <h4 className="font-bold text-slate-700">Identity Details</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-slate-600">
-                <div>ðŸ§‘â€ðŸ’» Logged user: <strong>{currentUser.name}</strong></div>
+                <div>🧑‍💻 Logged user: <strong>{currentUser.name}</strong></div>
                 <div>👤 Security Role: <strong>{currentUser.role}</strong></div>
                 <div>✉️ Primary Email: <strong>{currentUser.email}</strong></div>
               </div>
               {isEditorOnly && (
                 <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-500 text-[11px] font-semibold leading-normal">
-                  âš ï¸ Note: You log in under an Editor level profile. You are permitted to execute normal CRUD operations on lists, but master portal settings config is strictly locked for Super Admin!
+                  ⚠️ Note: You log in under an Editor level profile. You are permitted to execute normal CRUD operations on lists, but master portal settings config is strictly locked for Super Admin!
                 </div>
               )}
             </div>
@@ -2005,7 +2005,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               {/* 1. Interval configuration */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end pb-4 border-b border-slate-900">
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-bold text-slate-600">â±ï¸ Slide Rotation Period (Time Interval in seconds)</label>
+                  <label className="font-bold text-slate-600">⏱️ Slide Rotation Period (Time Interval in seconds)</label>
                   <p className="text-slate-500 text-[10px] -mt-1">Define how many seconds each slide remains on screen before automatically rotating.</p>
                   <input
                     type="number"
@@ -2025,7 +2025,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               {/* 2. Slide Create / Edit Form */}
               <div className="p-5 bg-slate-50/40 rounded-xl border border-slate-900 flex flex-col gap-4 mt-2">
                 <h5 className="font-bold text-slate-700 text-[12px] flex items-center gap-1.5">
-                  <span>{editingSlideId ? 'âœï¸ Modify Slide Segment' : '➕ Insert New Custom Slide'}</span>
+                  <span>{editingSlideId ? '✏️ Modify Slide Segment' : '➕ Insert New Custom Slide'}</span>
                 </h5>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2126,7 +2126,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                 
                 {(!settingsForm.heroSlides || settingsForm.heroSlides.length === 0) ? (
                   <div className="p-6 bg-slate-50/20 border border-dashed border-slate-200 rounded-xl text-center text-slate-500">
-                    âš ï¸ No custom images defined yet. The website is currently displaying the high-resolution default cover photo ("Chosen Leaders Meet" in Jai Rani School map). Add images above to build a rotating slideshow.
+                    ⚠️ No custom images defined yet. The website is currently displaying the high-resolution default cover photo ("Chosen Leaders Meet" in Jai Rani School map). Add images above to build a rotating slideshow.
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2 border border-slate-900 rounded-xl overflow-hidden">
@@ -2243,7 +2243,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             {/* Bearer Form */}
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5 text-left md:col-span-2">
-                <h4 className="font-extrabold text-slate-700 text-sm">{editingBearerId ? 'âœï¸ Edit Bearer Details' : '➕ Register New Board Leader'}</h4>
+                <h4 className="font-extrabold text-slate-700 text-sm">{editingBearerId ? '✏️ Edit Bearer Details' : '➕ Register New Board Leader'}</h4>
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
@@ -2437,7 +2437,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             <div ref={unitsFormRef} className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 text-left flex justify-between items-center">
                 <h4 className="font-bold text-slate-700 text-sm">
-                  {editingUnitId ? `âœï¸ Edit Config: ${unitForm.name || 'Parish Unit'}` : '➕ Register New CML Parish Unit'}
+                  {editingUnitId ? `✏️ Edit Config: ${unitForm.name || 'Parish Unit'}` : '➕ Register New CML Parish Unit'}
                 </h4>
                 {editingUnitId && (
                   <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded animate-pulse">
@@ -2520,7 +2520,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
               {/* Stats Metrics nested fields */}
               <div className="flex flex-col gap-1.5 text-left bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ‘¨â€ðŸ‘©â€ðŸ‘§â€ðŸ‘¦ CML Student Members Count</label>
+                <label className="font-bold text-slate-600">👨‍👩‍👧‍👦 CML Student Members Count</label>
                 <input
                   type="number"
                   value={unitForm.stats?.members ?? ''}
@@ -2536,7 +2536,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <label className="font-bold text-slate-600">ðŸ¡ Parish Familes Count</label>
+                <label className="font-bold text-slate-600">🏘️ Parish Familes Count</label>
                 <input
                   type="number"
                   value={unitForm.stats?.families ?? ''}
@@ -2731,8 +2731,8 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   onChange={(e) => setEventForm({ ...eventForm, type: e.target.value as any })}
                   className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-900 focus:outline-none"
                 >
-                  <option value="upcoming">â³ Upcoming (Active/Pending)</option>
-                  <option value="past">ðŸ“ Completed Past Archive</option>
+                  <option value="upcoming">⏳ Upcoming (Active/Pending)</option>
+                  <option value="past">📁 Completed Past Archive</option>
                 </select>
               </div>
 
@@ -2780,7 +2780,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
               {eventForm.type === 'past' && (
                 <div className="flex flex-col gap-1.5 text-left md:col-span-2 bg-emerald-950/20 p-4 rounded-xl border border-emerald-200 animate-fade-in text-slate-900">
-                  <label className="font-bold text-emerald-400">ðŸ… Winners Summary & points table details (For Past Archives Only)</label>
+                  <label className="font-bold text-emerald-400">🏅 Winners Summary & points table details (For Past Archives Only)</label>
                   <input
                     type="text"
                     value={eventForm.summary}
@@ -2818,7 +2818,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                 <div key={e.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex items-center gap-3 text-left truncate">
                     <span className="p-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-indigo-600 font-bold tracking-wide shrink-0">
-                      {e.type === 'upcoming' ? 'â³ UP' : 'ðŸ“ PAST'}
+                      {e.type === 'upcoming' ? '⏳ UP' : '📁 PAST'}
                     </span>
                     <div className="flex flex-col truncate">
                       <span className="font-bold text-slate-900 truncate">{e.title}</span>
@@ -2858,7 +2858,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs flex flex-col gap-4">
               <div className="text-left font-bold text-slate-700 text-sm">
-                ðŸŽ™ï¸ Edit Editorial Press Bulletin
+                🎙️ Edit Editorial Press Bulletin
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2903,7 +2903,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     className="w-4 h-4 text-fuchsia-600 focus:ring-indigo-500 border-slate-300 bg-slate-50 rounded"
                   />
                   <label htmlFor="featured-check" className="font-bold text-slate-700 cursor-pointer select-none text-xs leading-none">
-                    â­ Spotlight on Headline block (Featured layout)
+                    ⭐ Spotlight on Headline block (Featured layout)
                   </label>
                 </div>
 
@@ -3091,7 +3091,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               
               {/* Box 1: Create categories album */}
               <div className="bg-white backdrop-blur-md p-5 rounded-2xl border border-slate-200 flex flex-col gap-3">
-                <h4 className="font-bold text-sm text-amber-500">ðŸ“ Construct Organized Album</h4>
+                <h4 className="font-bold text-sm text-amber-500">📁 Construct Organized Album</h4>
                 
                 <div className="flex flex-col gap-1.5">
                   <label className="font-semibold text-slate-600">Album Name</label>
@@ -3134,7 +3134,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
               {/* Box 2: Upload images on existing files */}
               <div className="bg-white backdrop-blur-md p-5 rounded-2xl border border-slate-200 flex flex-col gap-3">
-                <h4 className="font-bold text-sm text-amber-500">ðŸ–¼ï¸ Upload Photo to Album Slot</h4>
+                <h4 className="font-bold text-sm text-amber-500">🖼️ Upload Photo to Album Slot</h4>
                 
                 <div className="flex flex-col gap-1.5">
                   <label className="font-semibold text-slate-600">Select target album category</label>
