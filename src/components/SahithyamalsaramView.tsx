@@ -747,7 +747,7 @@ export default function SahithyamalsaramView({ dbData, isAdminLoggedIn, onSaveDa
  <div className="text-center select-none">
  <p className="font-cinzel text-[9px] sm:text-sm tracking-[0.35em] text-slate-300 uppercase mb-1">Cherupushpa Mission League</p>
  <h2 className="font-cinzel text-[11px] sm:text-xl tracking-[0.2em] text-emerald-300 uppercase mb-0.5 font-bold">Kaliyar Mekhala</h2>
- <h1 className="font-cinzel font-black text-[24px] sm:text-5xl md:text-7xl uppercase leading-none tracking-wide" style={{background: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #06b6d4 55%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 4px 24px rgba(6,182,212,0.4))'}}>
+ <h1 className="font-cinzel font-black text-[clamp(24px,5.5vw,64px)] uppercase leading-none tracking-wide" style={{background: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #06b6d4 55%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 4px 24px rgba(6,182,212,0.4))'}}>
  Sahithyamalsaram
  </h1>
  </div>
