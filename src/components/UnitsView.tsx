@@ -98,7 +98,7 @@ export default function UnitsView({ units }: UnitsViewProps) {
  </div>
 
  {/* Elegant Readonly Contact View */}
- <div className="p-6 rounded-b-[32px] flex flex-col flex-1 gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
+ <div className="p-6 rounded-b-[32px] flex flex-col h-full gap-6 bg-gradient-to-b from-white/40 to-slate-50/40">
  
  {/* Unit Title Block */}
  <div className="flex flex-col gap-2.5">
@@ -163,7 +163,7 @@ export default function UnitsView({ units }: UnitsViewProps) {
  <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-60" />
 
  {/* CML President Section */}
- <div className="flex flex-col group/leader">
+ <div className="flex flex-col group/leader pb-2">
  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
  President
  </label>
