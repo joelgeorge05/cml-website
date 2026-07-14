@@ -398,7 +398,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
         pageDoc.setFontSize(7.5);
         pageDoc.setTextColor(148, 163, 184); // slate-400
         const dateStr = new Date().toLocaleDateString('en-GB');
-        pageDoc.text(`Generated on ${dateStr} â€¢ CML Kaliyar Mekhala Official Records`, 15, 281);
+        pageDoc.text(`Generated on ${dateStr} • CML Kaliyar Mekhala Official Records`, 15, 281);
         pageDoc.text(`Page ${pageNum} of ${totalPagesCount}`, 195, 281, { align: 'right' });
       };
 
@@ -488,10 +488,10 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       }
 
       doc.save(`Chosen_Summit_2026_Participants_All.pdf`);
-      triggerToast('âœ“ Successfully exported all Chosen delegates to PDF!');
+      triggerToast('✓ Successfully exported all Chosen delegates to PDF!');
     } catch (err: any) {
       console.error(err);
-      triggerToast(`âœ— Failed to generate PDF: ${err.message || err}`);
+      triggerToast(`✗ Failed to generate PDF: ${err.message || err}`);
     } finally {
       setIsChosenPdfGenerating(false);
     }
@@ -1365,7 +1365,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     try {
       const text = await extractTextFromPdf(file);
       if (!text || text.trim().length === 0) {
-        triggerToast('âœ— PDF file is empty or contains no readable text.');
+        triggerToast('✗ PDF file is empty or contains no readable text.');
         setIsUploading(false);
         return;
       }
@@ -1389,11 +1389,11 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
         setBulkEntries(newEntries);
         triggerToast(`Extracted ${newEntries.length} participants from PDF!`);
       } else {
-        triggerToast('âœ— No valid entries found in PDF. Check formats.');
+        triggerToast('✗ No valid entries found in PDF. Check formats.');
       }
     } catch (err: any) {
       console.error('PDF Upload Error:', err);
-      triggerToast('âœ— PDF Parse Error: ' + err.message);
+      triggerToast('✗ PDF Parse Error: ' + err.message);
     } finally {
       setIsUploading(false);
     }
@@ -1464,7 +1464,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       {/* Toast persistent notification overlay */}
       {successMsg && (
         <div className="fixed top-4 right-4 bg-white backdrop-blur-md/80 backdrop-blur-md border border-emerald-500/50 text-emerald-400 p-4 rounded-xl shadow-2xl z-50 animate-slide-left font-bold text-xs">
-          âœ… {successMsg}
+          ✅ {successMsg}
         </div>
       )}
 
@@ -1922,7 +1922,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-bold text-slate-600">â›ª Parish Units Badge Count</label>
+                <label className="font-bold text-slate-600">⛪ Parish Units Badge Count</label>
                 <input
                   type="number"
                   value={settingsForm.parishUnitsCount}
@@ -1945,7 +1945,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                       className="accent-indigo-500 w-4 h-4 rounded cursor-pointer"
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-slate-900">Kalolsavam 2026â€“27</span>
+                      <span className="font-semibold text-slate-900">Kalolsavam 2026–27</span>
                       <span className="text-[10px] text-slate-500">Show result desk panel</span>
                     </div>
                   </label>
@@ -1959,7 +1959,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                       className="accent-amber-500 w-4 h-4 rounded cursor-pointer"
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-slate-900 text-xs leading-none">Sahithyamalsaram 2026â€“27</span>
+                      <span className="font-semibold text-slate-900 text-xs leading-none">Sahithyamalsaram 2026–27</span>
                       <span className="text-[10px] text-slate-500 mt-1">Show literary contest</span>
                     </div>
                   </label>
@@ -2018,14 +2018,14 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   />
                 </div>
                 <div className="text-[11px] text-slate-600 bg-slate-50/50 p-3 rounded-xl border border-slate-100 md:mt-0">
-                  âš¡ Each active slide will fade/scale dynamically using modern hardware-accelerated animations based on this configured interval. Keep at 5s for optimum readability.
+                  ⚡ Each active slide will fade/scale dynamically using modern hardware-accelerated animations based on this configured interval. Keep at 5s for optimum readability.
                 </div>
               </div>
 
               {/* 2. Slide Create / Edit Form */}
               <div className="p-5 bg-slate-50/40 rounded-xl border border-slate-900 flex flex-col gap-4 mt-2">
                 <h5 className="font-bold text-slate-700 text-[12px] flex items-center gap-1.5">
-                  <span>{editingSlideId ? 'âœï¸ Modify Slide Segment' : 'âž• Insert New Custom Slide'}</span>
+                  <span>{editingSlideId ? 'âœï¸ Modify Slide Segment' : '➕ Insert New Custom Slide'}</span>
                 </h5>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2183,7 +2183,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                               className="p-1 text-slate-500 hover:text-slate-700 disabled:opacity-30 text-xs font-bold"
                               title="Move Slide Up"
                             >
-                              â–²
+                              ▲
                             </button>
                             <button
                               onClick={() => handleMoveSlide(index, 'down')}
@@ -2191,7 +2191,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                               className="p-1 text-slate-500 hover:text-slate-700 disabled:opacity-30 text-xs font-bold"
                               title="Move Slide Down"
                             >
-                              â–¼
+                              ▼
                             </button>
 
                             {/* Edit button */}
@@ -2243,7 +2243,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             {/* Bearer Form */}
             <div className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5 text-left md:col-span-2">
-                <h4 className="font-extrabold text-slate-700 text-sm">{editingBearerId ? 'âœï¸ Edit Bearer Details' : 'âž• Register New Board Leader'}</h4>
+                <h4 className="font-extrabold text-slate-700 text-sm">{editingBearerId ? 'âœï¸ Edit Bearer Details' : '➕ Register New Board Leader'}</h4>
               </div>
 
               <div className="flex flex-col gap-1.5 text-left">
@@ -2437,7 +2437,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             <div ref={unitsFormRef} className="bg-white backdrop-blur-md p-6 rounded-2xl border border-slate-200 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 text-left flex justify-between items-center">
                 <h4 className="font-bold text-slate-700 text-sm">
-                  {editingUnitId ? `âœï¸ Edit Config: ${unitForm.name || 'Parish Unit'}` : 'âž• Register New CML Parish Unit'}
+                  {editingUnitId ? `âœï¸ Edit Config: ${unitForm.name || 'Parish Unit'}` : '➕ Register New CML Parish Unit'}
                 </h4>
                 {editingUnitId && (
                   <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded animate-pulse">
@@ -2671,7 +2671,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                 <div key={u.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex flex-col text-left gap-1 truncate">
                     <span className="font-bold text-slate-800 truncate">{u.name}</span>
-                    <span className="text-[10px] text-amber-400">Patron Saint: {u.patronSaint} â€¢ Members: {u.stats?.members || 0}</span>
+                    <span className="text-[10px] text-amber-400">Patron Saint: {u.patronSaint} • Members: {u.stats?.members || 0}</span>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
                     <button
@@ -2822,7 +2822,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     </span>
                     <div className="flex flex-col truncate">
                       <span className="font-bold text-slate-900 truncate">{e.title}</span>
-                      <span className="text-[10px] text-slate-500 font-mono">Date: {e.date} â€¢ Venue: {e.venue}</span>
+                      <span className="text-[10px] text-slate-500 font-mono">Date: {e.date} • Venue: {e.venue}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
@@ -2945,7 +2945,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                 <div key={n.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-left items-center">
                   <div className="flex flex-col truncate gap-0.5">
                     <span className="font-bold text-slate-900 truncate text-sm">{n.title}</span>
-                    <span className="text-[10px] text-slate-500">Category: {n.category} â€¢ {n.date} {n.isFeatured && <strong className="text-amber-400 ml-1">â˜… Featured Spotlight Headline</strong>}</span>
+                    <span className="text-[10px] text-slate-500">Category: {n.category} • {n.date} {n.isFeatured && <strong className="text-amber-400 ml-1">★ Featured Spotlight Headline</strong>}</span>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button
@@ -3272,7 +3272,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     </span>
                     <div className="flex flex-col truncate">
                       <span className="font-bold text-slate-800 truncate">{d.title}</span>
-                      <span className="text-[10px] text-slate-500">Category: {d.category} â€¢ Size: {d.fileSize}</span>
+                      <span className="text-[10px] text-slate-500">Category: {d.category} • Size: {d.fileSize}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
