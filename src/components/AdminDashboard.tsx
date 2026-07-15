@@ -75,7 +75,7 @@ interface AdminDashboardProps {
     registrations?: any[];
     users?: UserRole[];
   };
-  currentUser: { email: string; name: string; role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' };
+  currentUser: { email: string; name: string; role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin' };
   onSaveDatabase: (updatedData: any, action: string, target: string) => Promise<boolean>;
   onLogout: () => void;
   onGoToTab?: (tab: string) => void;
@@ -501,13 +501,13 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
   const [adminForm, setAdminForm] = useState({
     name: '',
     email: '',
-    role: 'Admin' as 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin',
+    role: 'Admin' as 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin',
     password: ''
   });
 
   const [editingAdminEmail, setEditingAdminEmail] = useState<string | null>(null);
   const [editAdminPassword, setEditAdminPassword] = useState('');
-  const [editAdminRole, setEditAdminRole] = useState<'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin'>('Admin');
+  const [editAdminRole, setEditAdminRole] = useState<'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin'>('Admin');
   const [editAdminName, setEditAdminName] = useState('');
 
   const handleUpdateAdminUser = async (email: string) => {
@@ -3387,6 +3387,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                       <option value="Editor">Editor (General Content Only)</option>
                       <option value="Kalolsavam Editor">Kalolsavam Editor (Marks & Participants)</option>
                       <option value="Blood Donor Admin">Blood Donor Admin (Blood Donors Only)</option>
+                      <option value="Shakha Admin">Shakha Admin (Blood Donors Only)</option>
                     </select>
                   </div>
 
@@ -3511,6 +3512,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                                   <option value="Editor">Editor</option>
                                   <option value="Kalolsavam Editor">Kalolsavam Editor</option>
                                   <option value="Blood Donor Admin">Blood Donor Admin</option>
+                                  <option value="Shakha Admin">Shakha Admin</option>
                                 </select>
                               </div>
                               <div className="flex flex-col gap-1">
