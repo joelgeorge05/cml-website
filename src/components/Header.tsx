@@ -68,7 +68,7 @@ export default function Header({
  ];
 
  if (isAdminLoggedIn) {
- navLinks.push({ id: 'blood-donors', label: 'Blood Donors' });
+ navLinks.push({ id: 'blood-donors', label: 'Pulse' });
  const isShakha = currentUser?.user_metadata?.role === 'shakha' || currentUser?.role === 'shakha';
  if (!isShakha) {
  navLinks.push({ id: 'admin', label: 'Admin Console' });

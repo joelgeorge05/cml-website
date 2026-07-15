@@ -504,7 +504,7 @@ export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLog
  <Heart className="w-5 h-5 text-white fill-white" />
  </div>
  <div>
- <h1 className="text-xl md:text-2xl font-extrabold font-display text-slate-900 tracking-tight">Blood Donors</h1>
+ <h1 className="text-xl md:text-2xl font-extrabold font-display text-slate-900 tracking-tight">Pulse</h1>
  <p className="text-xs md:text-sm text-slate-500 hidden xs:block">Find and contact available donors</p>
  </div>
  </div>
