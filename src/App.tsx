@@ -33,6 +33,7 @@ export default function App() {
  useEffect(() => {
  const handlePopState = () => {
  setActiveTab(getInitialTab());
+ window.scrollTo(0, 0);
  };
  window.addEventListener('popstate', handlePopState);
  return () => window.removeEventListener('popstate', handlePopState);
@@ -41,9 +42,7 @@ export default function App() {
  const handleSetActiveTab = (tab: string) => {
  setActiveTab(tab);
  window.history.pushState({}, '', tab === 'home' ? '/' : `/${tab}`);
- if (tab === 'admin') {
- window.scrollTo({ top: 0, behavior: 'smooth' });
- }
+ window.scrollTo(0, 0);
  };
  const [dbData, setDbData] = useState<any>({
  settings: {
