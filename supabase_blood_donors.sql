@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS public.blood_donors (
     parish TEXT NOT NULL,
     last_donated_date DATE,
     is_available BOOLEAN DEFAULT true,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
+    created_by_email TEXT
 );
 
 ALTER TABLE public.blood_donors ENABLE ROW LEVEL SECURITY;
