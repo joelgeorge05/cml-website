@@ -21,10 +21,20 @@ BEGIN
         CREATE POLICY "Allow authenticated insert blood_donors" ON public.blood_donors FOR INSERT WITH CHECK (auth.role() = 'authenticated');
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated update blood_donors' AND tablename = 'blood_donors') THEN
-        CREATE POLICY "Allow authenticated update blood_donors" ON public.blood_donors FOR UPDATE USING (auth.role() = 'authenticated');
+        CREATE POLICY "Allow authenticated update blood_donors" ON public.blood_donors FOR UPDATE USING (
+            auth.role() = 'authenticated' AND (
+                (auth.jwt() -> 'user_metadata' ->> 'role') IN ('Super Admin', 'Admin', 'Blood Donor Admin') 
+                OR created_by_email = auth.jwt() ->> 'email'
+            )
+        );
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated delete blood_donors' AND tablename = 'blood_donors') THEN
-        CREATE POLICY "Allow authenticated delete blood_donors" ON public.blood_donors FOR DELETE USING (auth.role() = 'authenticated');
+        CREATE POLICY "Allow authenticated delete blood_donors" ON public.blood_donors FOR DELETE USING (
+            auth.role() = 'authenticated' AND (
+                (auth.jwt() -> 'user_metadata' ->> 'role') IN ('Super Admin', 'Admin', 'Blood Donor Admin') 
+                OR created_by_email = auth.jwt() ->> 'email'
+            )
+        );
     END IF;
 END
 $$;

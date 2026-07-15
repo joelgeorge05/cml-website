@@ -14,8 +14,19 @@ import bcrypt from 'bcryptjs';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { createClient } from '@supabase/supabase-js';
+import crypto from 'crypto';
 
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed'));
+    }
+  }
+});
 
 const app = express();
 const PORT = 3000;
@@ -70,13 +81,15 @@ const saveLimiter = rateLimit({
   message: { success: false, error: 'Too many requests. Please slow down.' }
 });
 
-const JWT_SECRET = process.env.JWT_SECRET || 'cml-mekhala-super-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(64).toString('hex');
 
 // Users & roles
-const defaultUsers = [
-  { email: 'joelveliyath05@gmail.com', name: 'Joel Veliyath', role: 'Super Admin', password: bcrypt.hashSync('pan9710@ZER', 10) },
-  { email: 'admin@cmlkaliyar.org', name: 'Mekhala Office Bearer', role: 'Admin', password: bcrypt.hashSync('pan9710@ZER', 10) }
-];
+const defaultUsers = process.env.ADMIN_PASSWORD 
+  ? [
+      { email: 'joelveliyath05@gmail.com', name: 'Joel Veliyath', role: 'Super Admin', password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10) },
+      { email: 'admin@cmlkaliyar.org', name: 'Mekhala Office Bearer', role: 'Admin', password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10) }
+    ]
+  : [];
 
 // Initial Seed Data
 const initialDB = {
@@ -642,8 +655,30 @@ app.post('/api/save-database', saveLimiter, authenticateToken, (req, res) => {
     return res.status(400).json({ error: 'Missing updatedData' });
   }
   
-  // Preserve existing usernames' passwords since passwords are stripped in GET /api/data response
+  const role = req.user?.role;
+  if (role === 'shakha' || role === 'Blood Donor Admin') {
+    return res.status(403).json({ error: 'Permission Denied: Restricted role cannot modify global database' });
+  }
+
   const db = loadDatabase();
+
+  // Role-Based Access Control (RBAC) filtering
+  if (role === 'Editor') {
+    updatedData.settings = db.settings;
+    updatedData.users = db.users;
+    updatedData.registrations = db.registrations;
+    updatedData.competitionStatuses = db.competitionStatuses;
+    updatedData.results = db.results;
+  } else if (role === 'Kalolsavam Editor') {
+    const allowedKeys = ['registrations', 'competitionStatuses', 'results'];
+    for (const key of Object.keys(updatedData)) {
+      if (!allowedKeys.includes(key)) {
+        updatedData[key] = db[key];
+      }
+    }
+  }
+
+  // Preserve existing usernames' passwords since passwords are stripped in GET /api/data response
   if (updatedData.users && Array.isArray(updatedData.users)) {
     updatedData.users = updatedData.users.map((updatedUser: any) => {
       const existingUser = db.users?.find((u: any) => u.email.trim().toLowerCase() === updatedUser.email.trim().toLowerCase());
