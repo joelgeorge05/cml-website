@@ -1,6 +1,0 @@
-{
-  "name": "CML Kaliyar Mekhala Portal",
-  "description": "Portals for the Cherupushpa Mission League (CML) Kaliyar Mekhala (Kothamangalam Diocese) for arts events, participant registrations, results, and news announcements.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
