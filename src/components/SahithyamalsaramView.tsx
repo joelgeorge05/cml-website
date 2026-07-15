@@ -740,7 +740,7 @@ export default function SahithyamalsaramView({ dbData, isAdminLoggedIn, onSaveDa
  <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 w-6 h-6 md:w-10 md:h-10 border-b-2 border-l-2 border-blue-500/60 rounded-bl-xl md:rounded-bl-2xl pointer-events-none" />
  <div className="absolute bottom-3 right-3 md:bottom-5 md:right-5 w-6 h-6 md:w-10 md:h-10 border-b-2 border-r-2 border-blue-500/60 rounded-br-xl md:rounded-br-2xl pointer-events-none" />
 
- <div className="relative z-10 px-4 md:px-14 py-6 md:py-14 flex flex-col items-center gap-3 md:gap-6">
+ <div className="relative z-10 px-4 md:px-14 py-5 md:py-8 flex flex-col items-center gap-2 md:gap-5">
 
 
 
@@ -778,7 +778,7 @@ export default function SahithyamalsaramView({ dbData, isAdminLoggedIn, onSaveDa
 
  {/* Scroll Down Indicator */}
  <div 
-  className="mt-6 md:mt-8 flex flex-col items-center justify-center animate-bounce cursor-pointer group/scroll hover:opacity-100 opacity-70 transition-opacity"
+  className="mt-4 md:mt-5 flex flex-col items-center justify-center animate-bounce cursor-pointer group/scroll hover:opacity-100 opacity-70 transition-opacity"
   onClick={() => window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
   >
   <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-slate-300 font-bold mb-2 group-hover/scroll:text-emerald-300 transition-colors">Scroll Down For Results</span>
