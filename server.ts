@@ -550,6 +550,10 @@ app.get('/api/data', (req, res) => {
   if (safeData.users && Array.isArray(safeData.users)) {
     safeData.users = safeData.users.map(({ password, ...u }: any) => u);
   }
+  // Strip password fields from units (Shakha accounts) to prevent security leaks
+  if (safeData.units && Array.isArray(safeData.units)) {
+    safeData.units = safeData.units.map(({ password, ...u }: any) => u);
+  }
   res.json(safeData);
 });
 
