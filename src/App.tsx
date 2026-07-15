@@ -388,6 +388,12 @@ export default function App() {
 
  // Render actual route component dynamically
  const renderTabContent = () => {
+ const mappedUser = currentUser ? {
+ ...currentUser,
+ name: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
+ role: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.role || currentUser?.user_metadata?.role || 'Admin',
+ } : null;
+
  switch (activeTab) {
  case 'home':
  return (
@@ -475,6 +481,7 @@ export default function App() {
  <BloodDonorsView 
  bloodDonors={dbData.bloodDonors || []} 
  isAdminLoggedIn={!!currentUser}
+ currentUser={mappedUser}
  onGoToTab={handleSetActiveTab}
  />
  </Suspense>
@@ -597,12 +604,6 @@ export default function App() {
  </div>
  );
  }
-
- const mappedUser = {
- ...currentUser,
- name: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
- role: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.role || currentUser?.user_metadata?.role || 'Admin',
- };
 
  return (
  <AdminDashboard

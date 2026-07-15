@@ -108,6 +108,7 @@ export interface BloodDonor {
   employment_status?: string;
   employment_address?: string;
   created_at?: string;
+  created_by_email?: string;
 }
 
 export interface ActivityLog {

@@ -22,12 +22,13 @@ const STATUS_OPTIONS = ['Student', 'Employed', 'Unemployed', 'House wife'];
 interface BloodDonorsViewProps {
  bloodDonors: BloodDonor[];
  isAdminLoggedIn: boolean;
+ currentUser?: { email: string; name: string; role: string } | null;
  onGoToTab: (tab: string) => void;
 }
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
-export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLoggedIn }: BloodDonorsViewProps) {
+export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLoggedIn, currentUser }: BloodDonorsViewProps) {
  const [localDonors, setLocalDonors] = useState<BloodDonor[]>([]);
  const [searchQuery, setSearchQuery] = useState('');
  const [selectedGroup, setSelectedGroup] = useState<string>('All');
@@ -149,7 +150,8 @@ export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLog
  } else {
  const { data, error } = await supabase.from('blood_donors').insert([{
  ...formData,
- last_donated_date: formData.last_donated_date || null
+ last_donated_date: formData.last_donated_date || null,
+ created_by_email: currentUser?.email || null
  }]).select().single();
  if (error) throw error;
  setLocalDonors(prev => [data, ...prev]);
@@ -686,7 +688,10 @@ export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLog
  </span>
  </div>
 
- {isAdminLoggedIn && (
+ {(isAdminLoggedIn && (
+  (currentUser?.role === 'Super Admin' || currentUser?.role === 'Admin' || currentUser?.role === 'Blood Donor Admin') ||
+  (currentUser?.role === 'Shakha Admin' && donor.created_by_email === currentUser?.email)
+  )) && (
  <div className="flex items-center gap-1">
  <button onClick={() => toggleAvailability(donor)} className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="Toggle Status">
  <CheckCircle2 className="w-4 h-4" />
