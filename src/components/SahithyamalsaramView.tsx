@@ -36,7 +36,8 @@ import {
  ChevronRight,
  SlidersHorizontal,
  MapPin,
- Lock
+ Lock,
+ ChevronDown
 } from 'lucide-react';
 
 import { getShakhaNameByCode } from '../types';
@@ -774,6 +775,17 @@ export default function SahithyamalsaramView({ dbData, isAdminLoggedIn, onSaveDa
  </div>
  ))}
  </div>
+
+ {/* Scroll Down Indicator */}
+ <div 
+  className="mt-6 md:mt-8 flex flex-col items-center justify-center animate-bounce cursor-pointer group/scroll hover:opacity-100 opacity-70 transition-opacity"
+  onClick={() => window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
+  >
+  <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-slate-300 font-bold mb-2 group-hover/scroll:text-emerald-300 transition-colors">Scroll Down For Results</span>
+  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover/scroll:bg-white/10 group-hover/scroll:border-emerald-500/50 transition-all shadow-[0_0_15px_rgba(52,211,153,0)] group-hover/scroll:shadow-[0_0_15px_rgba(52,211,153,0.3)]">
+  <ChevronDown className="w-4 h-4 text-emerald-400 group-hover/scroll:text-emerald-300" />
+  </div>
+  </div>
 
  </div>
  </div>
