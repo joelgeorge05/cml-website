@@ -1599,12 +1599,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
           </button>
         </div>
 
-        {/* Console database state summary */}
-        <div className="mx-3 mb-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 hidden lg:block text-[10px] text-slate-500 leading-normal">
-          <span className="text-slate-400 font-bold block mb-1">🗄️ PERSISTENCE DATA</span>
-          <span>Saving to server: <strong className="text-slate-300">db.json</strong></span>
-          <span className="block mt-1">Status: Active container connection</span>
-        </div>
+
       </div>
 
       {/* Main Workspace Frame */}
