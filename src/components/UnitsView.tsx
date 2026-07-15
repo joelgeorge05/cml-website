@@ -113,77 +113,73 @@ export default function UnitsView({ units }: UnitsViewProps) {
 
  <div className="h-px w-full bg-gradient-to-r from-slate-200/80 via-slate-200/80 to-transparent" />
 
- {/* Leader List */}
- <div className="flex flex-col gap-4">
- 
- {/* CML Director Section */}
- <div className="flex flex-col group/leader">
- <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
- Director
- </label>
- <div className="flex flex-col">
- <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-rose-600">
- {un.directorName || <span className="text-slate-400 italic font-normal">No Director Assigned</span>}
- </div>
- {un.directorPhone && (
- <a
- href={`tel:${un.directorPhone}`}
- className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-rose-500 mt-1 transition-colors"
- >
- <Phone className="w-3 h-3" />
- <span>{un.directorPhone}</span>
- </a>
- )}
- </div>
- </div>
+  {/* Leader List */}
+  <div className="flex flex-col gap-3">
+  
+  {/* CML Director Section */}
+  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/50 border border-slate-100/60 hover:bg-white hover:border-slate-200/60 hover:shadow-sm transition-all group/leader">
+  <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover/leader:bg-rose-50 group-hover/leader:text-rose-600 transition-colors">
+  <User className="w-4 h-4" />
+  </div>
+  <div className="flex-1 flex flex-col min-w-0">
+  <label className="text-[9px] uppercase font-bold tracking-widest text-slate-400 mb-0.5">Director</label>
+  <div className="text-[13px] font-bold text-slate-800 leading-tight transition-colors group-hover/leader:text-rose-600">
+  {un.directorName || <span className="text-slate-400 italic font-normal">Not Assigned</span>}
+  </div>
+  </div>
+  {un.directorPhone && (
+  <a
+  href={`tel:${un.directorPhone}`}
+  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-100 transition-colors shrink-0"
+  >
+  <Phone className="w-3.5 h-3.5" />
+  </a>
+  )}
+  </div>
 
- <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-60" />
+  {/* CML Joint Director Section */}
+  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/50 border border-slate-100/60 hover:bg-white hover:border-slate-200/60 hover:shadow-sm transition-all group/leader">
+  <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover/leader:bg-rose-50 group-hover/leader:text-rose-600 transition-colors">
+  <User className="w-4 h-4" />
+  </div>
+  <div className="flex-1 flex flex-col min-w-0">
+  <label className="text-[9px] uppercase font-bold tracking-widest text-slate-400 mb-0.5">Joint Director</label>
+  <div className="text-[13px] font-bold text-slate-800 leading-tight transition-colors group-hover/leader:text-rose-600">
+  {un.jointDirectorName || <span className="text-slate-400 italic font-normal">Not Assigned</span>}
+  </div>
+  </div>
+  {un.jointDirectorPhone && (
+  <a
+  href={`tel:${un.jointDirectorPhone}`}
+  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-100 transition-colors shrink-0"
+  >
+  <Phone className="w-3.5 h-3.5" />
+  </a>
+  )}
+  </div>
 
- {/* CML Joint Director Section */}
- <div className="flex flex-col group/leader">
- <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
- Joint Director
- </label>
- <div className="flex flex-col">
- <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-rose-600">
- {un.jointDirectorName || <span className="text-slate-400 italic font-normal">No Joint Director</span>}
- </div>
- {un.jointDirectorPhone && (
- <a
- href={`tel:${un.jointDirectorPhone}`}
- className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-rose-500 mt-1 transition-colors"
- >
- <Phone className="w-3 h-3" />
- <span>{un.jointDirectorPhone}</span>
- </a>
- )}
- </div>
- </div>
+  {/* CML President Section */}
+  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/50 border border-slate-100/60 hover:bg-white hover:border-slate-200/60 hover:shadow-sm transition-all group/leader">
+  <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover/leader:bg-amber-50 group-hover/leader:text-amber-600 transition-colors">
+  <User className="w-4 h-4" />
+  </div>
+  <div className="flex-1 flex flex-col min-w-0">
+  <label className="text-[9px] uppercase font-bold tracking-widest text-slate-400 mb-0.5">President</label>
+  <div className="text-[13px] font-bold text-slate-800 leading-tight transition-colors group-hover/leader:text-amber-600">
+  {un.presidentName || <span className="text-slate-400 italic font-normal">Not Assigned</span>}
+  </div>
+  </div>
+  {un.presidentPhone && (
+  <a
+  href={`tel:${un.presidentPhone}`}
+  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-amber-600 hover:bg-amber-100 transition-colors shrink-0"
+  >
+  <Phone className="w-3.5 h-3.5" />
+  </a>
+  )}
+  </div>
+  </div>
 
- <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-60" />
-
- {/* CML President Section */}
- <div className="flex flex-col group/leader pb-2">
- <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-1">
- President
- </label>
- <div className="flex flex-col">
- <div className="text-[15px] font-bold text-slate-800 transition-colors group-hover/leader:text-amber-600">
- {un.presidentName || <span className="text-slate-400 italic font-normal">No President Assigned</span>}
- </div>
- {un.presidentPhone && (
- <a
- href={`tel:${un.presidentPhone}`}
- className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 hover:text-amber-500 mt-1 transition-colors"
- >
- <Phone className="w-3 h-3" />
- <span>{un.presidentPhone}</span>
- </a>
- )}
- </div>
- </div>
-
- </div>
  </div>
  </motion.div>
  );
