@@ -170,31 +170,51 @@ export default function Header({
  <CMLLogo className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-[56px] md:h-[56px]" />
  
  <div className="flex flex-col lg:flex-row lg:items-center min-w-0 ml-1 xs:ml-2 justify-center gap-x-6 lg:gap-x-8 gap-y-2">
- {/* Brand Heading styled in elegant uppercase serif display - Stacked into 3 lines */}
- <div className="flex flex-col min-w-0 relative z-10 leading-none mb-0 drop-shadow-md">
- <span className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-slate-100">
- CHERUPUSHPA
- </span>
- <span className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-amber-400">
- MISSION
- </span>
- <span className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-amber-400">
- LEAGUE
- </span>
- <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
- <span className="font-sans font-black text-[7px] xs:text-[8px] sm:text-[10px] md:text-[12px] tracking-[0.15em] select-none uppercase text-rose-300 drop-shadow-sm">
- KALIYAR MEKHALA
- </span>
- 
- {/* Golden Star Jewel Badge (Inline) */}
- <div className="group relative flex items-center gap-1 px-2 py-[1px] md:py-0.5 rounded-full bg-gradient-to-br from-yellow-950/50 to-slate-950/80 border border-yellow-500/20 shadow-[inset_0_1px_1px_rgba(250,204,21,0.15),0_2px_8px_rgba(0,0,0,0.4)] cursor-default select-none overflow-hidden">
- <Star className="w-2 h-2 md:w-2.5 md:h-2.5 text-yellow-400 fill-yellow-400/50 drop-shadow-[0_0_5px_rgba(250,204,21,0.6)]" />
- <span className="text-[6px] md:text-[7.5px] font-['Outfit'] font-bold uppercase tracking-[0.1em] text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 to-yellow-500 relative z-10 whitespace-nowrap">
- GOLDEN STAR WINNER
- </span>
- </div>
- </div>
- </div>
+  <motion.div 
+  initial={{ opacity: 0, x: -10 }} 
+  animate={{ opacity: 1, x: 0 }} 
+  transition={{ duration: 0.6, staggerChildren: 0.1 }}
+  className="flex flex-col min-w-0 relative z-10 leading-none mb-0 drop-shadow-md transform transition-all duration-300 group-hover:scale-[1.02]"
+  >
+  <motion.span 
+  initial={{ opacity: 0, y: 5 }} 
+  animate={{ opacity: 1, y: 0 }} 
+  className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-slate-100 group-hover:text-white transition-colors"
+  >
+  CHERUPUSHPA
+  </motion.span>
+  <motion.span 
+  initial={{ opacity: 0, y: 5 }} 
+  animate={{ opacity: 1, y: 0 }} 
+  className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0)] group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+  >
+  MISSION
+  </motion.span>
+  <motion.span 
+  initial={{ opacity: 0, y: 5 }} 
+  animate={{ opacity: 1, y: 0 }} 
+  className="font-display font-black text-[9.5px] xs:text-[11px] sm:text-[14px] md:text-[17px] tracking-[0.06em] select-none uppercase text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0)] group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+  >
+  LEAGUE
+  </motion.span>
+  <motion.div 
+  initial={{ opacity: 0, y: 5 }} 
+  animate={{ opacity: 1, y: 0 }} 
+  className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5"
+  >
+  <span className="font-sans font-black text-[7px] xs:text-[8px] sm:text-[10px] md:text-[12px] tracking-[0.15em] select-none uppercase text-rose-300 drop-shadow-sm group-hover:text-rose-200 transition-colors">
+  KALIYAR MEKHALA
+  </span>
+  
+  {/* Golden Star Jewel Badge (Inline) */}
+  <div className="group relative flex items-center gap-1 px-2 py-[1px] md:py-0.5 rounded-full bg-gradient-to-br from-yellow-950/50 to-slate-950/80 border border-yellow-500/20 shadow-[inset_0_1px_1px_rgba(250,204,21,0.15),0_2px_8px_rgba(0,0,0,0.4)] cursor-default select-none overflow-hidden">
+  <Star className="w-2 h-2 md:w-2.5 md:h-2.5 text-yellow-400 fill-yellow-400/50 drop-shadow-[0_0_5px_rgba(250,204,21,0.6)]" />
+  <span className="text-[6px] md:text-[7.5px] font-['Outfit'] font-bold uppercase tracking-[0.1em] text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 to-yellow-500 relative z-10 whitespace-nowrap">
+  GOLDEN STAR WINNER
+  </span>
+  </div>
+  </motion.div>
+  </motion.div>
 
  {isOfflineFallback && (
  <div className="flex mt-1.5">
