@@ -93,13 +93,17 @@ export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLog
  }, [initialDonors]);
 
  const filteredDonors = useMemo(() => {
- return localDonors.filter(donor => {
- const matchesSearch = donor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
- donor.parish.toLowerCase().includes(searchQuery.toLowerCase());
- const matchesGroup = selectedGroup === 'All' || donor.blood_group === selectedGroup;
- return matchesSearch && matchesGroup;
- });
- }, [localDonors, searchQuery, selectedGroup]);
+  return localDonors.filter(donor => {
+  // Role-based visibility check: Shakha Admins can only see donors they created
+  const canSee = currentUser?.role !== 'Shakha Admin' || donor.created_by_email === currentUser?.email;
+  if (!canSee) return false;
+
+  const matchesSearch = donor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  donor.parish.toLowerCase().includes(searchQuery.toLowerCase());
+  const matchesGroup = selectedGroup === 'All' || donor.blood_group === selectedGroup;
+  return matchesSearch && matchesGroup;
+  });
+  }, [localDonors, searchQuery, selectedGroup, currentUser]);
 
  const showToast = (msg: string) => {
  setToastMessage(msg);
