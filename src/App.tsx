@@ -100,7 +100,7 @@ export default function App() {
 
     const processSupabaseUser = (user: any) => {
       const email = user.email || '';
-      let derivedRole = user.user_metadata?.role || 'Admin';
+      let derivedRole = user.user_metadata?.role || 'None';
       try {
         const cachedStr = localStorage.getItem('cml_db_cache');
         if (cachedStr) {
@@ -130,105 +130,148 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
- const fetchData = useCallback(async () => {
- // 1. Instantly load from local cache if available to prevent buffering
- const cachedData = localStorage.getItem('cml_db_cache');
- if (cachedData) {
- setDbData(JSON.parse(cachedData));
- setIsLoading(false); // Remove loading screen instantly
- }
+  const fetchData = useCallback(async () => {
+    // 1. Instantly load from local cache if available to prevent buffering
+    const cachedData = localStorage.getItem('cml_db_cache');
+    if (cachedData) {
+      setDbData(JSON.parse(cachedData));
+      setIsLoading(false); // Remove loading screen instantly
+    }
 
- try {
- if (!cachedData) setIsLoading(true); // Only show loader on very first visit ever
- 
- const [settings, announcements, news, officeBearers, units, events, galleryAlbums, downloads, bloodDonors] =
- await Promise.all([
- supabase.from('settings').select('id, support_desk, email, motto_primary, motto_secondary, hero_intro, parish_units_count, show_kalolsavam, show_sahithyamalsaram, show_overall_leaderboard, show_chosen, hero_slides, hero_interval').single(),
- supabase.from('announcements').select('id, text, type, date, is_sticky').order('date', { ascending: false }).limit(20),
- supabase.from('news').select('id, title, body, category, image_url, date, is_featured').order('date', { ascending: false }).limit(10),
- supabase.from('office_bearers').select('id, name, designation, photo_url, contact, email, service_period, order_index, house_name, unit').order('order_index'),
- supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, joint_director_name, joint_director_phone, stats_members, stats_families, stats_directors_count, description').order('order_index'),
- supabase.from('events').select('id, title, type, date, time, venue, description, image_url, summary').order('date', { ascending: false }).limit(10),
- supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
- supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
- supabase.from('blood_donors').select('*').order('created_at', { ascending: false }),
- ]);
+    try {
+      if (!cachedData) setIsLoading(true); // Only show loader on very first visit ever
+      
+      const [settings, announcements, news, officeBearers, units, events, galleryAlbums, downloads, bloodDonors, localDataRes] =
+      await Promise.all([
+        supabase.from('settings').select('id, support_desk, email, motto_primary, motto_secondary, hero_intro, parish_units_count, show_kalolsavam, show_sahithyamalsaram, show_overall_leaderboard, show_chosen, hero_slides, hero_interval').single(),
+        supabase.from('announcements').select('id, text, type, date, is_sticky').order('date', { ascending: false }).limit(20),
+        supabase.from('news').select('id, title, body, category, image_url, date, is_featured').order('date', { ascending: false }).limit(10),
+        supabase.from('office_bearers').select('id, name, designation, photo_url, contact, email, service_period, order_index, house_name, unit').order('order_index'),
+        supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, joint_director_name, joint_director_phone, stats_members, stats_families, stats_directors_count, description').order('order_index'),
+        supabase.from('events').select('id, title, type, date, time, venue, description, image_url, summary').order('date', { ascending: false }).limit(10),
+        supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
+        supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
+        supabase.from('blood_donors').select('*').order('created_at', { ascending: false }),
+        fetch('/api/data').then(res => res.json()).catch(() => ({ users: [] }))
+      ]);
 
- if (settings.error) throw settings.error; if (units.error) throw new Error('Units Error: ' + units.error.message);
+      if (settings.error) throw settings.error; if (units.error) throw new Error('Units Error: ' + units.error.message);
 
- // Map snake_case DB columns back to the camelCase shape the components expect
- const s = settings.data;
- const freshData = {
- settings: {
- id: s.id,
- supportDesk: s.support_desk,
- email: s.email,
- mottoPrimary: s.motto_primary,
- mottoSecondary: s.motto_secondary,
- heroIntro: s.hero_intro,
- parishUnitsCount: s.parish_units_count,
- showKalolsavam: s.show_kalolsavam !== false,
- showSahithyamalsaram: s.show_sahithyamalsaram !== false,
- showOverallLeaderboard: s.show_overall_leaderboard !== false,
- showChosen: s.show_chosen !== false,
- heroSlides: s.hero_slides,
- heroInterval: s.hero_interval,
- },
- announcements: (announcements.data ?? []).map((a: any) => ({ ...a, isSticky: a.is_sticky })),
- news: (news.data ?? []).map((n: any) => ({ ...n, imageUrl: n.image_url, isFeatured: n.is_featured })),
- officeBearers: (officeBearers.data ?? []).map((o: any) => ({ ...o, photoUrl: o.photo_url, servicePeriod: o.service_period, orderIndex: o.order_index, houseName: o.house_name })),
- units: (units.data ?? []).map((u: any) => {
- // Find matching local executive data
- const localExec = Object.entries(shakhaExecutives).find(([k, v]) => u.name?.toLowerCase().includes(k.toLowerCase()))?.[1] || {};
- 
- return { 
- ...u, 
- patronSaint: u.patron_saint, 
- contactNumber: u.contact_number, 
- bgPhoto: u.bg_photo, 
- orderIndex: u.order_index, 
- jointDirectorName: localExec.jointDirectorName || u.joint_director_name, 
- jointDirectorPhone: localExec.jointDirectorPhone || u.joint_director_phone, 
- directorName: localExec.directorName || u.director_name,
- directorPhone: localExec.directorPhone || u.director_phone,
- presidentName: localExec.presidentName || u.president_name,
- presidentPhone: localExec.presidentPhone || u.president_phone,
- stats: { 
- members: u.stats_members, 
- families: u.stats_families, 
- directorsCount: u.stats_directors_count 
- } 
- };
- }),
- events: (events.data ?? []).map((e: any) => ({ ...e, imageUrl: e.image_url })),
- galleryAlbums: (galleryAlbums.data ?? []).map((a: any) => ({ ...a, coverImageUrl: a.cover_image_url })),
- downloads: (downloads.data ?? []).map((d: any) => ({ 
- ...d, 
- category: d.type, 
- fileSize: d.size, 
- uploadDate: d.date, 
- downloadUrl: d.file_url 
- })),
- bloodDonors: (bloodDonors?.data ?? []).map((b: any) => ({ ...b })),
- users: localStorage.getItem('cml_dynamic_admins') ? JSON.parse(localStorage.getItem('cml_dynamic_admins')!) : [],
- chosenRegistrations: (() => {
- return localStorage.getItem('cml_chosen_registrations') ? 
- JSON.parse(localStorage.getItem('cml_chosen_registrations')!) : 
- (JSON.parse(localStorage.getItem('cml_db_cache') || '{}').chosenRegistrations || []);
- })()
- };
+      // Map snake_case DB columns back to the camelCase shape the components expect
+      const s = settings.data;
+      const freshData = {
+        settings: {
+          id: s.id,
+          supportDesk: s.support_desk,
+          email: s.email,
+          mottoPrimary: s.motto_primary,
+          mottoSecondary: s.motto_secondary,
+          heroIntro: s.hero_intro,
+          parishUnitsCount: s.parish_units_count,
+          showKalolsavam: s.show_kalolsavam !== false,
+          showSahithyamalsaram: s.show_sahithyamalsaram !== false,
+          showOverallLeaderboard: s.show_overall_leaderboard !== false,
+          showChosen: s.show_chosen !== false,
+          heroSlides: s.hero_slides,
+          heroInterval: s.hero_interval,
+        },
+        announcements: (announcements.data ?? []).map((a: any) => ({ ...a, isSticky: a.is_sticky })),
+        news: (news.data ?? []).map((n: any) => ({ ...n, imageUrl: n.image_url, isFeatured: n.is_featured })),
+        officeBearers: (officeBearers.data ?? []).map((o: any) => ({ ...o, photoUrl: o.photo_url, servicePeriod: o.service_period, orderIndex: o.order_index, houseName: o.house_name })),
+        units: (units.data ?? []).map((u: any) => {
+          const localExec = (dbData?.units || []).find((x: any) => x.id === u.id) || {};
+          return {
+            id: u.id,
+            name: u.name,
+            patronSaint: u.patron_saint,
+            contactNumber: u.contact_number,
+            bgPhoto: u.bg_photo,
+            orderIndex: u.order_index,
+            jointDirectorName: localExec.jointDirectorName || u.joint_director_name, 
+            jointDirectorPhone: localExec.jointDirectorPhone || u.joint_director_phone, 
+            directorName: localExec.directorName || u.director_name,
+            directorPhone: localExec.directorPhone || u.director_phone,
+            presidentName: localExec.presidentName || u.president_name,
+            presidentPhone: localExec.presidentPhone || u.president_phone,
+            stats: { 
+              members: u.stats_members, 
+              families: u.stats_families, 
+              directorsCount: u.stats_directors_count 
+            } 
+          };
+        }),
+        events: (events.data ?? []).map((e: any) => ({ ...e, imageUrl: e.image_url })),
+        galleryAlbums: (galleryAlbums.data ?? []).map((a: any) => ({ ...a, coverImageUrl: a.cover_image_url })),
+        downloads: (downloads.data ?? []).map((d: any) => ({ 
+          ...d, 
+          category: d.type, 
+          fileSize: d.size, 
+          uploadDate: d.date, 
+          downloadUrl: d.file_url 
+        })),
+        bloodDonors: (bloodDonors?.data ?? []).map((b: any) => ({ ...b })),
+        users: localDataRes?.users || [],
+        chosenRegistrations: (() => {
+          return localStorage.getItem('cml_chosen_registrations') ? 
+            JSON.parse(localStorage.getItem('cml_chosen_registrations')!) : 
+            (JSON.parse(localStorage.getItem('cml_db_cache') || '{}').chosenRegistrations || []);
+        })()
+      };
 
- // Update state silently in background and save to cache
- setDbData(freshData);
- localStorage.setItem('cml_db_cache', JSON.stringify(freshData));
- setIsOfflineFallback(false);
- } catch (e) {
- console.error('Error fetching from Supabase:', e);
- if (!cachedData) setIsOfflineFallback(true);
- } finally {
- setIsLoading(false);
- }
- }, []);
+      // Enforce whitelist checking on mount for the currently logged in Supabase user
+      const savedUserStr = localStorage.getItem('sb-ayoqlfospgjcklucurig-auth-token');
+      if (savedUserStr) {
+        try {
+          const parsedToken = JSON.parse(savedUserStr);
+          const user = parsedToken?.user;
+          if (user && user.email) {
+            const email = user.email.toLowerCase();
+            const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
+            const isInAdminList = freshData.users?.some((u: any) => u.email.toLowerCase() === email);
+            
+            if (!isSystemAdmin && !isInAdminList) {
+              console.warn('Stale session detected: user not in admin directory. Logging out.');
+              await supabase.auth.signOut();
+              setCurrentUser(null);
+            } else {
+              // Recalculate and update the role
+              let derivedRole = user.user_metadata?.role || 'None';
+              const adminEntry = freshData.users?.find((u: any) => u.email.toLowerCase() === email);
+              if (adminEntry) {
+                derivedRole = adminEntry.role;
+              } else if (email === 'joelveliyath05@gmail.com') {
+                derivedRole = 'Super Admin';
+              } else if (email === 'admin@cmlkaliyar.org') {
+                derivedRole = 'Admin';
+              }
+              
+              setCurrentUser({
+                ...user,
+                role: derivedRole
+              });
+            }
+          }
+        } catch (e) {
+          console.error('Error enforcing validation on saved auth token:', e);
+        }
+      }
+
+      // Sync local dynamic admins storage cache
+      if (freshData.users.length > 0) {
+        localStorage.setItem('cml_dynamic_admins', JSON.stringify(freshData.users));
+      }
+
+      // Update state silently in background and save to cache
+      setDbData(freshData);
+      localStorage.setItem('cml_db_cache', JSON.stringify(freshData));
+      setIsOfflineFallback(false);
+    } catch (e) {
+      console.error('Error fetching from Supabase:', e);
+      if (!cachedData) setIsOfflineFallback(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dbData]);
 
  // Save function: optimistically updates local state; actual DB writes are handled per-component via supabase client
  const handleSaveDatabase = async (updatedData: any, action: string, target: string): Promise<boolean> => {
@@ -395,7 +438,7 @@ export default function App() {
       setLoginError('Access Denied: Your account is not authorized in the Admin Directory.');
       setCurrentUser(null);
     } else {
-      let derivedRole = data.user.user_metadata?.role || 'Admin';
+      let derivedRole = data.user.user_metadata?.role || 'None';
       const adminEntry = dbData?.users?.find((u: any) => u.email.toLowerCase() === loginEmail);
       if (adminEntry) {
         derivedRole = adminEntry.role;
@@ -477,7 +520,7 @@ export default function App() {
  const mappedUser = currentUser ? {
  ...currentUser,
  name: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
- role: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.role || currentUser?.user_metadata?.role || 'Admin',
+ role: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.role || currentUser?.user_metadata?.role || 'None',
  } : null;
 
  switch (activeTab) {
