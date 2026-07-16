@@ -287,7 +287,11 @@ export default function App() {
  user_metadata: { name: localUser.name, role: localUser.role },
  role: localUser.role
  } as any);
+ if (localUser.role === 'shakha' || localUser.role === 'Blood Donor Admin') {
+ handleSetActiveTab('blood-donors');
+ } else {
  handleSetActiveTab('admin');
+ }
  setEmail('');
  setPassword('');
  setIsLoggingIn(false);
@@ -315,7 +319,7 @@ export default function App() {
  user_metadata: { name: json.user.name, role: json.user.role },
  role: json.user.role
  } as any);
- if (json.user.role === 'shakha') {
+ if (json.user.role === 'shakha' || json.user.role === 'Blood Donor Admin') {
  handleSetActiveTab('blood-donors');
  } else {
  handleSetActiveTab('admin');
@@ -340,7 +344,7 @@ export default function App() {
  setLoginError(error.message || 'Invalid username or password credentials.');
  } else if (data.user) {
  setCurrentUser(data.user);
- if (data.user.user_metadata?.role === 'shakha') {
+ if (data.user.user_metadata?.role === 'shakha' || data.user.user_metadata?.role === 'Blood Donor Admin') {
  handleSetActiveTab('blood-donors');
  } else {
  handleSetActiveTab('admin');
@@ -605,20 +609,21 @@ export default function App() {
  );
  }
 
- if (currentUser.user_metadata?.role === 'shakha' || currentUser.role === 'shakha') {
- return (
- <div className="py-20 text-center font-sans">
- <h2 className="text-2xl font-bold">Access Denied</h2>
- <p className="text-stone-500 mt-2">Shakha accounts cannot access the admin console.</p>
- <button 
- onClick={() => handleSetActiveTab('blood-donors')}
- className="mt-4 px-4 py-2 bg-rose-700 hover:bg-rose-800 transition text-white rounded-lg text-sm font-semibold shadow-lg"
- >
- Go to Blood Donors Directory
- </button>
- </div>
- );
- }
+  const isRestrictedRole = currentUser.user_metadata?.role === 'shakha' || currentUser.role === 'shakha' || currentUser.user_metadata?.role === 'Blood Donor Admin' || currentUser.role === 'Blood Donor Admin';
+  if (isRestrictedRole) {
+    return (
+      <div className="py-20 text-center font-sans">
+        <h2 className="text-2xl font-bold">Access Denied</h2>
+        <p className="text-stone-500 mt-2">Your account cannot access the main admin console.</p>
+        <button 
+          onClick={() => handleSetActiveTab('blood-donors')}
+          className="mt-4 px-4 py-2 bg-rose-700 hover:bg-rose-800 transition text-white rounded-lg text-sm font-semibold shadow-lg"
+        >
+          Go to Blood Donors Directory
+        </button>
+      </div>
+    );
+  }
 
  return (
  <AdminDashboard
