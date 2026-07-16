@@ -62,10 +62,12 @@ export default function App() {
  galleryImages: [],
  downloads: [],
  bloodDonors: [],
+ users: [],
  });
- const [currentUser, setCurrentUser] = useState<any>(null);
- const [isLoading, setIsLoading] = useState(false);
- const [isOfflineFallback, setIsOfflineFallback] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOfflineFallback, setIsOfflineFallback] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
  // Login form states
  const [email, setEmail] = useState('');
@@ -132,7 +134,7 @@ export default function App() {
 
   // Enforce whitelist checking and role mapping dynamically on user or data load
   useEffect(() => {
-    if (!currentUser || !dbData) return;
+    if (!currentUser || !dbData || !isDataLoaded) return;
     
     const email = currentUser.email?.toLowerCase();
     if (!email) return;
@@ -163,7 +165,7 @@ export default function App() {
         });
       }
     }
-  }, [currentUser, dbData]);
+  }, [currentUser, dbData, isDataLoaded]);
 
   const fetchData = useCallback(async () => {
     // 1. Instantly load from local cache if available to prevent buffering
@@ -176,7 +178,7 @@ export default function App() {
     try {
       if (!cachedData) setIsLoading(true); // Only show loader on very first visit ever
       
-      const [settings, announcements, news, officeBearers, units, events, galleryAlbums, downloads, bloodDonors, localDataRes] =
+      const [settings, announcements, news, officeBearers, units, events, galleryAlbums, downloads, bloodDonors, adminAccounts] =
       await Promise.all([
         supabase.from('settings').select('id, support_desk, email, motto_primary, motto_secondary, hero_intro, parish_units_count, show_kalolsavam, show_sahithyamalsaram, show_overall_leaderboard, show_chosen, hero_slides, hero_interval').single(),
         supabase.from('announcements').select('id, text, type, date, is_sticky').order('date', { ascending: false }).limit(20),
@@ -187,7 +189,7 @@ export default function App() {
         supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
         supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
         supabase.from('blood_donors').select('*').order('created_at', { ascending: false }),
-        supabase.from('admin_accounts').select('*').order('created_at', { ascending: false }).catch(() => ({ data: [] }))
+        supabase.from('admin_accounts').select('*').order('created_at', { ascending: false })
       ]);
 
       if (settings.error) throw settings.error; if (units.error) throw new Error('Units Error: ' + units.error.message);
@@ -262,9 +264,11 @@ export default function App() {
       setDbData(freshData);
       localStorage.setItem('cml_db_cache', JSON.stringify(freshData));
       setIsOfflineFallback(false);
+      setIsDataLoaded(true);
     } catch (e) {
       console.error('Error fetching from Supabase:', e);
       if (!cachedData) setIsOfflineFallback(true);
+      setIsDataLoaded(true);
     } finally {
       setIsLoading(false);
     }
