@@ -39,7 +39,8 @@ import {
   Upload,
   Eye,
   EyeOff,
-  Menu
+  Menu,
+  Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
