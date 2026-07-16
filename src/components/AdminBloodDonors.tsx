@@ -41,9 +41,9 @@ export default function AdminBloodDonors() {
 
  const filteredDonors = useMemo(() => {
  return donors.filter(donor => {
- const matchesSearch = donor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
- donor.blood_group.toLowerCase().includes(searchQuery.toLowerCase()) ||
- donor.phone.includes(searchQuery);
+ const matchesSearch = donor?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()) ||
+ donor?.blood_group?.toLowerCase()?.includes(searchQuery.toLowerCase()) ||
+ donor?.phone?.includes(searchQuery);
  const matchesShakha = selectedShakha === 'All' || donor.parish === selectedShakha;
  const matchesBloodGroup = selectedBloodGroup === 'All' || donor.blood_group === selectedBloodGroup;
  return matchesSearch && matchesShakha && matchesBloodGroup;

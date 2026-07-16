@@ -98,8 +98,8 @@ export default function BloodDonorsView({ bloodDonors: initialDonors, isAdminLog
   const canSee = currentUser?.role !== 'Shakha Admin' || donor.created_by_email === currentUser?.email;
   if (!canSee) return false;
 
-  const matchesSearch = donor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-  donor.parish.toLowerCase().includes(searchQuery.toLowerCase());
+  const matchesSearch = donor?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()) || 
+  donor?.parish?.toLowerCase()?.includes(searchQuery.toLowerCase());
   const matchesGroup = selectedGroup === 'All' || donor.blood_group === selectedGroup;
   return matchesSearch && matchesGroup;
   });
