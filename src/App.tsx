@@ -12,6 +12,7 @@ import HomeView from './components/HomeView';
 import OfficeBearersView from './components/OfficeBearersView';
 import UnitsView from './components/UnitsView';
 import HistoryView from './components/HistoryView';
+import { ErrorBoundary } from './components/ErrorBoundary';
 const GalleryView = React.lazy(() => import('./components/GalleryView'));
 import DownloadsView from './components/DownloadsView';
 const KalolsavamView = React.lazy(() => import('./components/KalolsavamView'));
@@ -820,7 +821,9 @@ export default function App() {
  <p className="mt-4 text-stone-500 font-sans text-xs font-bold animate-pulse tracking-widest uppercase">Loading Module...</p>
  </div>
  }>
+ <ErrorBoundary>
  {renderTabContent()}
+ </ErrorBoundary>
  </Suspense>
 
  {/* Floating Back to Home button for quick mobile reachability */}
