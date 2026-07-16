@@ -74,17 +74,43 @@ export default function App() {
  const [isLoggingIn, setIsLoggingIn] = useState(false);
  const [loginType, setLoginType] = useState<'shakha' | 'mekhala'>('shakha');
 
- // Restore Supabase session on mount and subscribe to auth changes
- useEffect(() => {
- supabase.auth.getSession().then(({ data: { session } }) => {
- if (session?.user) setCurrentUser(session.user);
- });
- const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
- setCurrentUser(session?.user ?? null);
- });
- fetchData();
- return () => subscription.unsubscribe();
- }, []);
+  // Restore Supabase session on mount and subscribe to auth changes
+  useEffect(() => {
+    // Check local jwt token first
+    const token = localStorage.getItem('cml_jwt_token');
+    let hasLocalSession = false;
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.exp * 1000 > Date.now()) {
+          setCurrentUser({
+            id: 'backend-' + payload.email,
+            email: payload.email,
+            user_metadata: { name: payload.name || payload.email, role: payload.role },
+            role: payload.role
+          } as any);
+          hasLocalSession = true;
+        } else {
+          localStorage.removeItem('cml_jwt_token');
+        }
+      } catch (e) {
+        console.error('Failed to parse local JWT token', e);
+      }
+    }
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setCurrentUser(session.user);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setCurrentUser(session.user);
+      } else if (!hasLocalSession) {
+        setCurrentUser(null);
+      }
+    });
+    fetchData();
+    return () => subscription.unsubscribe();
+  }, []);
 
  const fetchData = useCallback(async () => {
  // 1. Instantly load from local cache if available to prevent buffering
