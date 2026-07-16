@@ -368,16 +368,25 @@ export default function App() {
 
  if (error) {
  setLoginError(error.message || 'Invalid username or password credentials.');
- } else if (data.user) {
- setCurrentUser(data.user);
- if (data.user.user_metadata?.role === 'shakha') {
- handleSetActiveTab('blood-donors');
- } else {
- handleSetActiveTab('admin');
- }
- setEmail('');
- setPassword('');
- }
+  } else if (data.user) {
+    const isSystemAdmin = loginEmail === 'joelveliyath05@gmail.com' || loginEmail === 'admin@cmlkaliyar.org';
+    const isInAdminList = dbData?.users?.some((u: any) => u.email.toLowerCase() === loginEmail);
+    
+    if (!isSystemAdmin && !isInAdminList) {
+      await supabase.auth.signOut();
+      setLoginError('Access Denied: Your account is not authorized in the Admin Directory.');
+      setCurrentUser(null);
+    } else {
+      setCurrentUser(data.user);
+      if (data.user.user_metadata?.role === 'shakha') {
+        handleSetActiveTab('blood-donors');
+      } else {
+        handleSetActiveTab('admin');
+      }
+      setEmail('');
+      setPassword('');
+    }
+  }
  } catch (err) {
  console.error('Login request error:', err);
  setLoginError('Could not reach the authentication server.');
