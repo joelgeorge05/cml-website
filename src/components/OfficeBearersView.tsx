@@ -23,7 +23,7 @@ interface OfficeBearersViewProps {
   bearers: OfficeBearer[];
   dbData: any;
   isAdminLoggedIn: boolean;
-  onSaveDatabase: (key: string, data: any) => Promise<void>;
+  onSaveDatabase: (updatedData: any, action: string, target: string) => Promise<boolean>;
 }
 
 function getObPositionClass(name: string, designation: string, photoUrl: string, isModal = false): string {
