@@ -130,6 +130,41 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Enforce whitelist checking and role mapping dynamically on user or data load
+  useEffect(() => {
+    if (!currentUser || !dbData) return;
+    
+    const email = currentUser.email?.toLowerCase();
+    if (!email) return;
+
+    const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
+    const isInAdminList = dbData.users?.some((u: any) => u.email.toLowerCase() === email);
+    const isSupabaseUser = currentUser.id?.startsWith('backend-') === false && currentUser.id?.startsWith('dynamic-') === false;
+
+    if (isSupabaseUser && !isSystemAdmin && !isInAdminList) {
+      console.warn('Unauthorized session detected. Logging out.');
+      handleLogout();
+    } else {
+      // Re-map the role dynamically to keep frontend session perfectly in sync
+      let derivedRole = currentUser.user_metadata?.role || 'None';
+      const adminEntry = dbData.users?.find((u: any) => u.email.toLowerCase() === email);
+      if (adminEntry) {
+        derivedRole = adminEntry.role;
+      } else if (email === 'joelveliyath05@gmail.com') {
+        derivedRole = 'Super Admin';
+      } else if (email === 'admin@cmlkaliyar.org') {
+        derivedRole = 'Admin';
+      }
+
+      if (currentUser.role !== derivedRole) {
+        setCurrentUser({
+          ...currentUser,
+          role: derivedRole
+        });
+      }
+    }
+  }, [currentUser, dbData]);
+
   const fetchData = useCallback(async () => {
     // 1. Instantly load from local cache if available to prevent buffering
     const cachedData = localStorage.getItem('cml_db_cache');
@@ -152,7 +187,7 @@ export default function App() {
         supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
         supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
         supabase.from('blood_donors').select('*').order('created_at', { ascending: false }),
-        fetch('/api/data').then(res => res.json()).catch(() => ({ users: [] }))
+        supabase.from('admin_accounts').select('*').order('created_at', { ascending: false }).catch(() => ({ data: [] }))
       ]);
 
       if (settings.error) throw settings.error; if (units.error) throw new Error('Units Error: ' + units.error.message);
@@ -210,47 +245,13 @@ export default function App() {
           downloadUrl: d.file_url 
         })),
         bloodDonors: (bloodDonors?.data ?? []).map((b: any) => ({ ...b })),
-        users: localDataRes?.users || [],
+        users: adminAccounts?.data || [],
         chosenRegistrations: (() => {
           return localStorage.getItem('cml_chosen_registrations') ? 
             JSON.parse(localStorage.getItem('cml_chosen_registrations')!) : 
             (JSON.parse(localStorage.getItem('cml_db_cache') || '{}').chosenRegistrations || []);
         })()
       };
-
-      // Enforce whitelist checking on mount for the currently logged in Supabase user
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user && user.email) {
-          const email = user.email.toLowerCase();
-          const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
-          const isInAdminList = freshData.users?.some((u: any) => u.email.toLowerCase() === email);
-          
-          if (!isSystemAdmin && !isInAdminList) {
-            console.warn('Stale session detected: user not in admin directory. Logging out.');
-            await supabase.auth.signOut();
-            setCurrentUser(null);
-          } else {
-            // Recalculate and update the role
-            let derivedRole = user.user_metadata?.role || 'None';
-            const adminEntry = freshData.users?.find((u: any) => u.email.toLowerCase() === email);
-            if (adminEntry) {
-              derivedRole = adminEntry.role;
-            } else if (email === 'joelveliyath05@gmail.com') {
-              derivedRole = 'Super Admin';
-            } else if (email === 'admin@cmlkaliyar.org') {
-              derivedRole = 'Admin';
-            }
-            
-            setCurrentUser({
-              ...user,
-              role: derivedRole
-            });
-          }
-        }
-      } catch (e) {
-        console.error('Error enforcing validation on active user session:', e);
-      }
 
       // Sync local dynamic admins storage cache
       if (freshData.users.length > 0) {
@@ -310,6 +311,26 @@ export default function App() {
  } catch (err) {
  console.error('Failed to sync Chosen Registration with Supabase:', err);
  }
+ }
+
+ // Sync Admin Accounts table with Supabase
+ if (action === 'CREATE_ADMIN_ACCOUNT' || action === 'UPDATE_ADMIN_ACCOUNT' || action === 'REVOKE_ADMIN_ACCOUNT') {
+   try {
+     if (action === 'UPDATE_ADMIN_ACCOUNT') {
+       const emailToUpdate = target.split(' ')[0].toLowerCase().trim();
+       const updatedUser = updatedData.users?.find((u: any) => u.email.toLowerCase().trim() === emailToUpdate);
+       if (updatedUser) {
+         await supabase.from('admin_accounts').update({
+           name: updatedUser.name,
+           role: updatedUser.role
+         }).eq('email', emailToUpdate);
+       }
+     } else if (action === 'REVOKE_ADMIN_ACCOUNT') {
+       await supabase.from('admin_accounts').delete().eq('email', target.toLowerCase().trim());
+     }
+   } catch (err) {
+     console.error('Failed to sync Admin Account with Supabase:', err);
+   }
  }
  
  // Also save to the local JSON file database for persistence in the filesystem
