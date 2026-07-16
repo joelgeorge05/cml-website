@@ -98,12 +98,30 @@ export default function App() {
       }
     }
 
+    const processSupabaseUser = (user: any) => {
+      const email = user.email || '';
+      let derivedRole = user.user_metadata?.role || 'Admin';
+      try {
+        const cachedStr = localStorage.getItem('cml_db_cache');
+        if (cachedStr) {
+          const parsed = JSON.parse(cachedStr);
+          const adminEntry = parsed?.users?.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+          if (adminEntry) {
+            derivedRole = adminEntry.role;
+          }
+        }
+      } catch (e) {}
+      if (email === 'joelveliyath05@gmail.com') derivedRole = 'Super Admin';
+      if (email === 'admin@cmlkaliyar.org') derivedRole = 'Admin';
+      return { ...user, role: derivedRole };
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) setCurrentUser(session.user);
+      if (session?.user) setCurrentUser(processSupabaseUser(session.user));
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        setCurrentUser(session.user);
+        setCurrentUser(processSupabaseUser(session.user));
       } else if (!hasLocalSession) {
         setCurrentUser(null);
       }
@@ -377,8 +395,22 @@ export default function App() {
       setLoginError('Access Denied: Your account is not authorized in the Admin Directory.');
       setCurrentUser(null);
     } else {
-      setCurrentUser(data.user);
-      if (data.user.user_metadata?.role === 'shakha') {
+      let derivedRole = data.user.user_metadata?.role || 'Admin';
+      const adminEntry = dbData?.users?.find((u: any) => u.email.toLowerCase() === loginEmail);
+      if (adminEntry) {
+        derivedRole = adminEntry.role;
+      } else if (loginEmail === 'joelveliyath05@gmail.com') {
+        derivedRole = 'Super Admin';
+      } else if (loginEmail === 'admin@cmlkaliyar.org') {
+        derivedRole = 'Admin';
+      }
+
+      setCurrentUser({
+        ...data.user,
+        role: derivedRole
+      });
+
+      if (derivedRole === 'shakha') {
         handleSetActiveTab('blood-donors');
       } else {
         handleSetActiveTab('admin');
