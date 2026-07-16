@@ -107,7 +107,7 @@ export default function App() {
         const cachedStr = localStorage.getItem('cml_db_cache');
         if (cachedStr) {
           const parsed = JSON.parse(cachedStr);
-          const adminEntry = parsed?.users?.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+          const adminEntry = parsed?.users?.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
           if (adminEntry) {
             derivedRole = adminEntry.role;
           }
@@ -140,7 +140,7 @@ export default function App() {
     if (!email) return;
 
     const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
-    const isInAdminList = dbData.users?.some((u: any) => u.email.toLowerCase() === email);
+    const isInAdminList = dbData.users?.some((u: any) => u.email?.toLowerCase() === email);
     const isSupabaseUser = currentUser.id?.startsWith('backend-') === false && currentUser.id?.startsWith('dynamic-') === false;
 
     if (isSupabaseUser && !isSystemAdmin && !isInAdminList) {
@@ -149,7 +149,7 @@ export default function App() {
     } else {
       // Re-map the role dynamically to keep frontend session perfectly in sync
       let derivedRole = currentUser.user_metadata?.role || 'None';
-      const adminEntry = dbData.users?.find((u: any) => u.email.toLowerCase() === email);
+      const adminEntry = dbData.users?.find((u: any) => u.email?.toLowerCase() === email);
       if (adminEntry) {
         derivedRole = adminEntry.role;
       } else if (email === 'joelveliyath05@gmail.com') {
@@ -322,7 +322,7 @@ export default function App() {
    try {
      if (action === 'UPDATE_ADMIN_ACCOUNT') {
        const emailToUpdate = target.split(' ')[0].toLowerCase().trim();
-       const updatedUser = updatedData.users?.find((u: any) => u.email.toLowerCase().trim() === emailToUpdate);
+       const updatedUser = updatedData.users?.find((u: any) => u.email?.toLowerCase().trim() === emailToUpdate);
        if (updatedUser) {
          await supabase.from('admin_accounts').update({
            name: updatedUser.name,
@@ -387,7 +387,7 @@ export default function App() {
  const cachedStr = localStorage.getItem('cml_dynamic_admins');
  if (cachedStr) {
  const dynamicAdmins = JSON.parse(cachedStr);
- const localUser = dynamicAdmins.find((u: any) => u.email.toLowerCase() === loginEmail && u.password === password.trim());
+ const localUser = dynamicAdmins.find((u: any) => u.email?.toLowerCase() === loginEmail && u.password === password.trim());
  if (localUser) {
  setCurrentUser({
  id: 'dynamic-' + localUser.email,
@@ -450,9 +450,9 @@ export default function App() {
 
  if (error) {
  setLoginError(error.message || 'Invalid username or password credentials.');
-  } else if (data.user) {
+ } else if (data.user) {
     const isSystemAdmin = loginEmail === 'joelveliyath05@gmail.com' || loginEmail === 'admin@cmlkaliyar.org';
-    const isInAdminList = dbData?.users?.some((u: any) => u.email.toLowerCase() === loginEmail);
+    const isInAdminList = dbData?.users?.some((u: any) => u.email?.toLowerCase() === loginEmail);
     
     if (!isSystemAdmin && !isInAdminList) {
       await supabase.auth.signOut();
@@ -460,7 +460,7 @@ export default function App() {
       setCurrentUser(null);
     } else {
       let derivedRole = data.user.user_metadata?.role || 'None';
-      const adminEntry = dbData?.users?.find((u: any) => u.email.toLowerCase() === loginEmail);
+      const adminEntry = dbData?.users?.find((u: any) => u.email?.toLowerCase() === loginEmail);
       if (adminEntry) {
         derivedRole = adminEntry.role;
       } else if (loginEmail === 'joelveliyath05@gmail.com') {
@@ -538,11 +538,11 @@ export default function App() {
 
  // Render actual route component dynamically
  const renderTabContent = () => {
- const mappedUser = currentUser ? {
- ...currentUser,
- name: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
- role: (dbData?.users || []).find((u: any) => u.email.toLowerCase() === currentUser.email.toLowerCase())?.role || currentUser?.user_metadata?.role || 'None',
- } : null;
+  const mappedUser = currentUser ? {
+    ...currentUser,
+    name: (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
+    role: (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.role || currentUser?.user_metadata?.role || 'None',
+  } : null;
 
  switch (activeTab) {
  case 'home':
