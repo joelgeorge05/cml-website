@@ -19,6 +19,13 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { OfficeBearer } from '../types';
 
+interface OfficeBearersViewProps {
+  bearers: OfficeBearer[];
+  dbData: any;
+  isAdminLoggedIn: boolean;
+  onSaveDatabase: (key: string, data: any) => Promise<void>;
+}
+
 function getObPositionClass(name: string, designation: string, photoUrl: string, isModal = false): string {
  const n = name || '';
  const d = designation || '';

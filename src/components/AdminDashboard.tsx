@@ -77,7 +77,7 @@ interface AdminDashboardProps {
     registrations?: any[];
     users?: UserRole[];
   };
-  currentUser: { email: string; name: string; role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin' };
+  currentUser: { email: string; name: string; role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin' | 'Shakha' | 'shakha' | string };
   onSaveDatabase: (updatedData: any, action: string, target: string) => Promise<boolean>;
   onLogout: () => void;
   onGoToTab?: (tab: string) => void;

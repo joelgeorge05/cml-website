@@ -659,7 +659,7 @@ app.post('/api/save-database', saveLimiter, authenticateToken, (req, res) => {
     return res.status(400).json({ error: 'Missing updatedData' });
   }
   
-  const role = req.user?.role;
+  const role = (req as any).user?.role;
   if (role === 'shakha' || role === 'Blood Donor Admin') {
     return res.status(403).json({ error: 'Permission Denied: Restricted role cannot modify global database' });
   }
