@@ -140,7 +140,7 @@ export default function App() {
     if (!email) return;
 
     const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
-    const isInAdminList = dbData.users?.some((u: any) => u.email?.toLowerCase() === email);
+    const isInAdminList = (dbData.users || []).some((u: any) => u.email?.toLowerCase() === email);
     const isSupabaseUser = currentUser.id?.startsWith('backend-') === false && currentUser.id?.startsWith('dynamic-') === false;
 
     if (isSupabaseUser && !isSystemAdmin && !isInAdminList) {
@@ -149,7 +149,7 @@ export default function App() {
     } else {
       // Re-map the role dynamically to keep frontend session perfectly in sync
       let derivedRole = currentUser.user_metadata?.role || 'None';
-      const adminEntry = dbData.users?.find((u: any) => u.email?.toLowerCase() === email);
+      const adminEntry = (dbData.users || []).find((u: any) => u.email?.toLowerCase() === email);
       if (adminEntry) {
         derivedRole = adminEntry.role;
       } else if (email === 'joelveliyath05@gmail.com') {
@@ -171,8 +171,13 @@ export default function App() {
     // 1. Instantly load from local cache if available to prevent buffering
     const cachedData = localStorage.getItem('cml_db_cache');
     if (cachedData) {
-      setDbData(JSON.parse(cachedData));
-      setIsLoading(false); // Remove loading screen instantly
+      try {
+        const parsed = JSON.parse(cachedData);
+        setDbData(prev => ({ ...prev, ...parsed }));
+        setIsLoading(false);
+      } catch (e) {
+        console.error('Failed to parse cache', e);
+      }
     }
 
     try {
@@ -452,7 +457,7 @@ export default function App() {
  setLoginError(error.message || 'Invalid username or password credentials.');
  } else if (data.user) {
     const isSystemAdmin = loginEmail === 'joelveliyath05@gmail.com' || loginEmail === 'admin@cmlkaliyar.org';
-    const isInAdminList = dbData?.users?.some((u: any) => u.email?.toLowerCase() === loginEmail);
+    const isInAdminList = (dbData?.users || []).some((u: any) => u.email?.toLowerCase() === loginEmail);
     
     if (!isSystemAdmin && !isInAdminList) {
       await supabase.auth.signOut();
@@ -460,7 +465,7 @@ export default function App() {
       setCurrentUser(null);
     } else {
       let derivedRole = data.user.user_metadata?.role || 'None';
-      const adminEntry = dbData?.users?.find((u: any) => u.email?.toLowerCase() === loginEmail);
+      const adminEntry = (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === loginEmail);
       if (adminEntry) {
         derivedRole = adminEntry.role;
       } else if (loginEmail === 'joelveliyath05@gmail.com') {

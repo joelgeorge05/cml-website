@@ -526,7 +526,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     }
 
     const updatedUsers = (dbData.users || []).map((u: any) => {
-      if (u.email.toLowerCase() === email.toLowerCase()) {
+      if (u.email?.toLowerCase() === email.toLowerCase()) {
         const updatedUser: any = {
           ...u,
           name: editAdminName.trim(),
@@ -569,7 +569,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     const emailClean = adminForm.email.trim().toLowerCase();
     
     // Check if user already exists
-    const existsDynamic = (dbData.users || []).some((u: any) => u.email.toLowerCase() === emailClean);
+    const existsDynamic = (dbData.users || []).some((u: any) => u.email?.toLowerCase() === emailClean);
     const systemEmails = ['joelveliyath05@gmail.com', 'admin@cmlkaliyar.org'];
     const existsSystem = systemEmails.includes(emailClean);
 
@@ -638,7 +638,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       return;
     }
     
-    if (emailToDelete.toLowerCase() === currentUser.email.toLowerCase()) {
+    if (emailToDelete?.toLowerCase() === currentUser?.email?.toLowerCase()) {
       triggerToast('Security Error: You cannot delete your own currently logged-in account!');
       return;
     }
@@ -649,7 +649,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
     const updated = {
       ...dbData,
-      users: (dbData.users || []).filter((u: any) => u.email.toLowerCase() !== emailToDelete.toLowerCase())
+      users: (dbData.users || []).filter((u: any) => u.email?.toLowerCase() !== emailToDelete?.toLowerCase())
     };
 
     await saveState(updated, 'REVOKE_ADMIN_ACCOUNT', emailToDelete);
@@ -719,7 +719,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
       // Check name substring match
       for (const shakha of officialShakhas) {
-        if (uName.includes(shakha.name.toLowerCase())) {
+        if (uName.includes(shakha.name?.toLowerCase())) {
           return shakha.id;
         }
       }
@@ -2400,7 +2400,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-900">
-                  {dbData.officeBearers.map((b) => (
+                  {(dbData.officeBearers || []).map((b) => (
                     <tr key={b.id} className="hover:bg-slate-50/60 transition">
                       <td className="px-4 py-2.5">
                         <img loading="lazy" src={b.photoUrl} alt={b.name} className="w-8 h-8 rounded-md object-cover border border-slate-200" />
@@ -2678,7 +2678,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             {/* List columns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {dbData.units.map((u) => (
+              {(dbData.units || []).map((u) => (
                 <div key={u.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex flex-col text-left gap-1 truncate">
                     <span className="font-bold text-slate-800 truncate">{u.name}</span>
@@ -2825,7 +2825,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             {/* List calendar */}
             <div className="flex flex-col gap-3">
-              {dbData.events.map((e) => (
+              {(dbData.events || []).map((e) => (
                 <div key={e.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex items-center gap-3 text-left truncate">
                     <span className="p-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-indigo-600 font-bold tracking-wide shrink-0">
@@ -2952,7 +2952,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             {/* News Roll list table */}
             <div className="flex flex-col gap-4 text-xs">
-              {dbData.news.map((n) => (
+              {(dbData.news || []).map((n) => (
                 <div key={n.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-left items-center">
                   <div className="flex flex-col truncate gap-0.5">
                     <span className="font-bold text-slate-900 truncate text-sm">{n.title}</span>
@@ -3055,7 +3055,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             {/* Roll list */}
             <div className="flex flex-col gap-3">
-              {dbData.announcements.map((a) => (
+              {(dbData.announcements || []).map((a) => (
                 <div key={a.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex items-center gap-3 text-left truncate">
                     <span className={`p-1.5 px-2.5 rounded-lg font-bold shrink-0 text-[10px] ${
@@ -3154,7 +3154,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                     onChange={(e) => setImageForm({ ...imageForm, albumId: e.target.value })}
                     className="bg-slate-50 border border-slate-100 p-2.5 rounded text-slate-900"
                   >
-                    {dbData.galleryAlbums.map(alb => (
+                    {(dbData.galleryAlbums || []).map(alb => (
                       <option key={alb.id} value={alb.id}>{alb.title} ({alb.category})</option>
                     ))}
                   </select>
@@ -3275,7 +3275,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
             {/* List document */}
             <div className="flex flex-col gap-3">
-              {dbData.downloads.map((d) => (
+              {(dbData.downloads || []).map((d) => (
                 <div key={d.id} className="bg-white backdrop-blur-md p-4 rounded-xl border border-slate-200 flex justify-between gap-4 text-xs items-center">
                   <div className="flex items-center gap-3 text-left truncate">
                     <span className="p-2 bg-slate-50 text-amber-500 font-bold rounded-lg">
@@ -3477,7 +3477,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
                   {/* Dynamic Access Profiles */}
                   {(dbData.users || []).map((dynU: any) => {
-                    const isEditing = editingAdminEmail?.toLowerCase() === dynU.email.toLowerCase();
+                    const isEditing = editingAdminEmail?.toLowerCase() === dynU.email?.toLowerCase();
                     return (
                       <div key={dynU.email} className={`p-4 bg-slate-50 rounded-2xl border ${isEditing ? 'border-emerald-500/50 bg-slate-50/90' : 'border-slate-200 hover:border-slate-300'} flex flex-col gap-3 transition duration-200 border-l-4 border-l-emerald-500 text-left`}>
                         {!isEditing ? (
