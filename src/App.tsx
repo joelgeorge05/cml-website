@@ -307,8 +307,23 @@ export default function App() {
  body: JSON.stringify({ email: email.trim(), password: password.trim() })
  });
  const json = await res.json();
- if (json.success && json.token) {
+ if (json.success && json.token && json.user) {
  localStorage.setItem('cml_jwt_token', json.token);
+ setCurrentUser({
+ id: 'backend-' + json.user.email,
+ email: json.user.email,
+ user_metadata: { name: json.user.name, role: json.user.role },
+ role: json.user.role
+ } as any);
+ if (json.user.role === 'shakha') {
+ handleSetActiveTab('blood-donors');
+ } else {
+ handleSetActiveTab('admin');
+ }
+ setEmail('');
+ setPassword('');
+ setIsLoggingIn(false);
+ return;
  } else if (!json.success && json.error) {
  console.warn('Backend auth rejected:', json.error);
  }
