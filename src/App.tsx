@@ -219,41 +219,37 @@ export default function App() {
       };
 
       // Enforce whitelist checking on mount for the currently logged in Supabase user
-      const savedUserStr = localStorage.getItem('sb-ayoqlfospgjcklucurig-auth-token');
-      if (savedUserStr) {
-        try {
-          const parsedToken = JSON.parse(savedUserStr);
-          const user = parsedToken?.user;
-          if (user && user.email) {
-            const email = user.email.toLowerCase();
-            const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
-            const isInAdminList = freshData.users?.some((u: any) => u.email.toLowerCase() === email);
-            
-            if (!isSystemAdmin && !isInAdminList) {
-              console.warn('Stale session detected: user not in admin directory. Logging out.');
-              await supabase.auth.signOut();
-              setCurrentUser(null);
-            } else {
-              // Recalculate and update the role
-              let derivedRole = user.user_metadata?.role || 'None';
-              const adminEntry = freshData.users?.find((u: any) => u.email.toLowerCase() === email);
-              if (adminEntry) {
-                derivedRole = adminEntry.role;
-              } else if (email === 'joelveliyath05@gmail.com') {
-                derivedRole = 'Super Admin';
-              } else if (email === 'admin@cmlkaliyar.org') {
-                derivedRole = 'Admin';
-              }
-              
-              setCurrentUser({
-                ...user,
-                role: derivedRole
-              });
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && user.email) {
+          const email = user.email.toLowerCase();
+          const isSystemAdmin = email === 'joelveliyath05@gmail.com' || email === 'admin@cmlkaliyar.org';
+          const isInAdminList = freshData.users?.some((u: any) => u.email.toLowerCase() === email);
+          
+          if (!isSystemAdmin && !isInAdminList) {
+            console.warn('Stale session detected: user not in admin directory. Logging out.');
+            await supabase.auth.signOut();
+            setCurrentUser(null);
+          } else {
+            // Recalculate and update the role
+            let derivedRole = user.user_metadata?.role || 'None';
+            const adminEntry = freshData.users?.find((u: any) => u.email.toLowerCase() === email);
+            if (adminEntry) {
+              derivedRole = adminEntry.role;
+            } else if (email === 'joelveliyath05@gmail.com') {
+              derivedRole = 'Super Admin';
+            } else if (email === 'admin@cmlkaliyar.org') {
+              derivedRole = 'Admin';
             }
+            
+            setCurrentUser({
+              ...user,
+              role: derivedRole
+            });
           }
-        } catch (e) {
-          console.error('Error enforcing validation on saved auth token:', e);
         }
+      } catch (e) {
+        console.error('Error enforcing validation on active user session:', e);
       }
 
       // Sync local dynamic admins storage cache

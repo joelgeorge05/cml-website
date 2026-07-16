@@ -85,7 +85,7 @@ interface AdminDashboardProps {
 export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, onLogout, onGoToTab }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<string>(
     currentUser.role === 'Kalolsavam Editor' ? 'kalolsavam-marks' : 
-    currentUser.role === 'Blood Donor Admin' ? 'blood-donors' : 'overview'
+    (currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') ? 'blood-donors' : 'overview'
   );
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -663,6 +663,11 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
   const isEditorOnly = currentUser.role === 'Editor';
 
   const verifyPermission = () => {
+    const isRestricted = currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha';
+    if (isRestricted && activeTab !== 'blood-donors' && activeTab !== 'logs') {
+      triggerToast('Permission Denied: Restricted role cannot modify these settings.');
+      return false;
+    }
     if (currentUser.role === 'Kalolsavam Editor' && activeTab !== 'kalolsavam-marks' && activeTab !== 'sahithyamalsaram-marks' && activeTab !== 'participants') {
       triggerToast('Permission Denied: Editor can only modify Kalolsavam/Sahithyamalsaram marks and Participants!');
       return false;
@@ -1346,14 +1351,14 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     if (currentUser.role === 'Kalolsavam Editor') {
       return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants';
     }
-    if (currentUser.role === 'Blood Donor Admin') {
+    if (currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') {
       return item.id === 'blood-donors' || item.id === 'logs';
     }
     if (item.id === 'admins') {
       return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
     }
     if (item.id === 'blood-donors') {
-      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin' || currentUser.role === 'Blood Donor Admin';
+      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin' || currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin';
     }
     return true;
   });
