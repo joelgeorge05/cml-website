@@ -313,7 +313,7 @@ export default function App() {
  user_metadata: { name: localUser.name, role: localUser.role },
  role: localUser.role
  } as any);
- if (localUser.role === 'shakha' || localUser.role === 'Blood Donor Admin') {
+ if (localUser.role === 'shakha') {
  handleSetActiveTab('blood-donors');
  } else {
  handleSetActiveTab('admin');
@@ -345,7 +345,7 @@ export default function App() {
  user_metadata: { name: json.user.name, role: json.user.role },
  role: json.user.role
  } as any);
- if (json.user.role === 'shakha' || json.user.role === 'Blood Donor Admin') {
+ if (json.user.role === 'shakha') {
  handleSetActiveTab('blood-donors');
  } else {
  handleSetActiveTab('admin');
@@ -370,7 +370,7 @@ export default function App() {
  setLoginError(error.message || 'Invalid username or password credentials.');
  } else if (data.user) {
  setCurrentUser(data.user);
- if (data.user.user_metadata?.role === 'shakha' || data.user.user_metadata?.role === 'Blood Donor Admin') {
+ if (data.user.user_metadata?.role === 'shakha') {
  handleSetActiveTab('blood-donors');
  } else {
  handleSetActiveTab('admin');
@@ -635,7 +635,7 @@ export default function App() {
  );
  }
 
-  const isRestrictedRole = currentUser.user_metadata?.role === 'shakha' || currentUser.role === 'shakha' || currentUser.user_metadata?.role === 'Blood Donor Admin' || currentUser.role === 'Blood Donor Admin';
+  const isRestrictedRole = currentUser.user_metadata?.role === 'shakha' || currentUser.role === 'shakha';
   if (isRestrictedRole) {
     return (
       <div className="py-20 text-center font-sans">

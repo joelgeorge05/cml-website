@@ -10,6 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 import ImageCropperModal from './ImageCropperModal';
 import MarksGradeManager from './MarksGradeManager';
 import ParticipantsManager from './ParticipantsManager';
+import AdminBloodDonors from './AdminBloodDonors';
 import {
   ShieldAlert,
   Settings,
@@ -82,7 +83,10 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, onLogout, onGoToTab }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<string>(currentUser.role === 'Kalolsavam Editor' ? 'kalolsavam-marks' : 'overview');
+  const [activeTab, setActiveTab] = useState<string>(
+    currentUser.role === 'Kalolsavam Editor' ? 'kalolsavam-marks' : 
+    currentUser.role === 'Blood Donor Admin' ? 'blood-donors' : 'overview'
+  );
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
@@ -1332,6 +1336,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     { id: 'announcements', label: 'Announcements', icon: <ShieldAlert className="w-4 h-4" />, section: 'CONTENT' },
     { id: 'gallery', label: 'Gallery Media', icon: <Image className="w-4 h-4" />, section: 'CONTENT' },
     { id: 'downloads', label: 'Downloads', icon: <FileText className="w-4 h-4" />, section: 'CONTENT' },
+    { id: 'blood-donors', label: 'Blood Donors', icon: <Heart className="w-4 h-4" />, section: 'CONTENT' },
     { id: 'participants', label: 'Participants Registry', icon: <Users className="w-4 h-4" />, section: 'COMPETITIONS' },
     { id: 'kalolsavam-marks', label: 'Kalolsavam Marks', icon: <Award className="w-4 h-4" />, section: 'COMPETITIONS' },
     { id: 'sahithyamalsaram-marks', label: 'Sahithyamalsaram Marks', icon: <Award className="w-4 h-4" />, section: 'COMPETITIONS' },
@@ -1341,8 +1346,14 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     if (currentUser.role === 'Kalolsavam Editor') {
       return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants';
     }
+    if (currentUser.role === 'Blood Donor Admin') {
+      return item.id === 'blood-donors' || item.id === 'logs';
+    }
     if (item.id === 'admins') {
       return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
+    }
+    if (item.id === 'blood-donors') {
+      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin' || currentUser.role === 'Blood Donor Admin';
     }
     return true;
   });
@@ -3289,6 +3300,24 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'blood-donors' && (
+          <div className="flex-1 p-8 bg-gray-50/50">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-3 bg-rose-100 rounded-xl">
+                <Heart className="w-6 h-6 text-rose-600" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold font-sans tracking-tight text-slate-800">Blood Donors Database</h3>
+                <p className="text-stone-500 font-sans mt-1">Manage and view the list of registered blood donors.</p>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-[calc(100vh-200px)]">
+              <AdminBloodDonors />
             </div>
           </div>
         )}
