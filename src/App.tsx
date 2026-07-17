@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { supabase } from './lib/supabase';
+import { SHAKHA_OFFICIALS } from './data/shakhaOfficials';
 import { Shield, Lock, Mail, ServerCrash, Loader2, Sparkles, ArrowLeft, Home } from 'lucide-react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -153,10 +154,17 @@ export default function App() {
       const adminEntry = (dbData.users || []).find((u: any) => u.email?.toLowerCase() === email);
       if (adminEntry) {
         derivedRole = adminEntry.role;
-      } else if (email === 'joelveliyath05@gmail.com') {
+      } 
+      
+      // Fallback migration: automatically map legacy roles to the new 4 roles during session restore
+      if (derivedRole === 'Admin') derivedRole = 'Super Admin';
+      if (derivedRole === 'Editor' || derivedRole === 'Kalolsavam Editor') derivedRole = 'Kalolsavam Admin';
+      if (derivedRole === 'Blood Donor Admin' || derivedRole === 'Shakha Admin' || derivedRole === 'shakha') derivedRole = 'Blood Donor Register Admin';
+      
+      if (email === 'joelveliyath05@gmail.com') {
         derivedRole = 'Super Admin';
       } else if (email === 'admin@cmlkaliyar.org') {
-        derivedRole = 'Admin';
+        derivedRole = 'Super Admin'; // Migrated from Admin
       }
 
       if (currentUser.role !== derivedRole) {
@@ -190,7 +198,7 @@ export default function App() {
         supabase.from('announcements').select('id, text, type, date, is_sticky').order('date', { ascending: false }).limit(20),
         supabase.from('news').select('id, title, body, category, image_url, date, is_featured').order('date', { ascending: false }).limit(10),
         supabase.from('office_bearers').select('id, name, designation, photo_url, contact, email, service_period, order_index, house_name, unit').order('order_index'),
-        supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, joint_director_name, joint_director_phone, stats_members, stats_families, stats_directors_count, description').order('order_index'),
+        supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, joint_director_name, joint_director_phone, director_name, director_phone, president_name, president_phone, stats_members, stats_families, stats_directors_count, description').order('order_index'),
         supabase.from('events').select('id, title, type, date, time, venue, description, image_url, summary').order('date', { ascending: false }).limit(10),
         supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
         supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
@@ -223,6 +231,7 @@ export default function App() {
         officeBearers: (officeBearers.data ?? []).map((o: any) => ({ ...o, photoUrl: o.photo_url, servicePeriod: o.service_period, orderIndex: o.order_index, houseName: o.house_name })),
         units: (units.data ?? []).map((u: any) => {
           const localExec = (dbData?.units || []).find((x: any) => x.id === u.id) || {};
+          const hardcoded = SHAKHA_OFFICIALS[u.id] || {};
           return {
             id: u.id,
             name: u.name,
@@ -230,12 +239,12 @@ export default function App() {
             contactNumber: u.contact_number,
             bgPhoto: u.bg_photo,
             orderIndex: u.order_index,
-            jointDirectorName: localExec.jointDirectorName || u.joint_director_name, 
-            jointDirectorPhone: localExec.jointDirectorPhone || u.joint_director_phone, 
-            directorName: localExec.directorName || u.director_name,
-            directorPhone: localExec.directorPhone || u.director_phone,
-            presidentName: localExec.presidentName || u.president_name,
-            presidentPhone: localExec.presidentPhone || u.president_phone,
+            jointDirectorName: hardcoded.jointDirectorName || localExec.jointDirectorName || u.joint_director_name, 
+            jointDirectorPhone: hardcoded.jointDirectorPhone || localExec.jointDirectorPhone || u.joint_director_phone, 
+            directorName: hardcoded.directorName || localExec.directorName || u.director_name,
+            directorPhone: hardcoded.directorPhone || localExec.directorPhone || u.director_phone,
+            presidentName: hardcoded.presidentName || localExec.presidentName || u.president_name,
+            presidentPhone: hardcoded.presidentPhone || localExec.presidentPhone || u.president_phone,
             stats: { 
               members: u.stats_members, 
               families: u.stats_families, 
@@ -469,10 +478,17 @@ export default function App() {
       const adminEntry = (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === loginEmail);
       if (adminEntry) {
         derivedRole = adminEntry.role;
-      } else if (loginEmail === 'joelveliyath05@gmail.com') {
+        // Fallback migration: automatically map legacy roles to the new 4 roles
+        if (derivedRole === 'Admin') derivedRole = 'Super Admin';
+        if (derivedRole === 'Editor' || derivedRole === 'Kalolsavam Editor') derivedRole = 'Kalolsavam Admin';
+        if (derivedRole === 'Blood Donor Admin' || derivedRole === 'Shakha Admin' || derivedRole === 'shakha') derivedRole = 'Blood Donor Register Admin';
+      }
+      
+      // Always enforce Super Admin for the master account regardless of database entry
+      if (loginEmail === 'joelveliyath05@gmail.com') {
         derivedRole = 'Super Admin';
-      } else if (loginEmail === 'admin@cmlkaliyar.org') {
-        derivedRole = 'Admin';
+      } else if (loginEmail === 'admin@cmlkaliyar.org' && (!adminEntry || adminEntry.role === 'None')) {
+        derivedRole = 'Super Admin'; // Migrating admin@cmlkaliyar.org to Super Admin as well since 'Admin' is deprecated
       }
 
       setCurrentUser({
@@ -480,7 +496,7 @@ export default function App() {
         role: derivedRole
       });
 
-      if (derivedRole === 'shakha') {
+      if (derivedRole === 'Blood Donor Register Admin' || derivedRole === 'Blood Donor Super Admin' || derivedRole === 'shakha') {
         handleSetActiveTab('blood-donors');
       } else {
         handleSetActiveTab('admin');
@@ -544,11 +560,19 @@ export default function App() {
 
  // Render actual route component dynamically
  const renderTabContent = () => {
-  const mappedUser = currentUser ? {
-    ...currentUser,
-    name: (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
-    role: (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.role || currentUser?.user_metadata?.role || 'None',
-  } : null;
+  const mappedUser = useMemo(() => {
+    if (!currentUser) return null;
+    let r = (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.role || currentUser?.user_metadata?.role || 'None';
+    if (r === 'Admin') r = 'Super Admin';
+    if (r === 'Editor' || r === 'Kalolsavam Editor') r = 'Kalolsavam Admin';
+    if (r === 'Blood Donor Admin' || r === 'Shakha Admin' || r === 'shakha') r = 'Blood Donor Register Admin';
+    if (currentUser.email?.toLowerCase() === 'joelveliyath05@gmail.com' || currentUser.email?.toLowerCase() === 'admin@cmlkaliyar.org') r = 'Super Admin';
+    return {
+      ...currentUser,
+      name: (dbData?.users || []).find((u: any) => u.email?.toLowerCase() === currentUser.email?.toLowerCase())?.name || currentUser?.user_metadata?.name || '',
+      role: r,
+    };
+  }, [currentUser, dbData]);
 
  switch (activeTab) {
  case 'home':

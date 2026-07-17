@@ -506,17 +506,17 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
   const [adminForm, setAdminForm] = useState({
     name: '',
     email: '',
-    role: 'Admin' as 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin',
+    role: 'Super Admin' as 'Super Admin' | 'Kalolsavam Admin' | 'Blood Donor Register Admin' | 'Blood Donor Super Admin',
     password: ''
   });
 
   const [editingAdminEmail, setEditingAdminEmail] = useState<string | null>(null);
   const [editAdminPassword, setEditAdminPassword] = useState('');
-  const [editAdminRole, setEditAdminRole] = useState<'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin'>('Admin');
+  const [editAdminRole, setEditAdminRole] = useState<'Super Admin' | 'Kalolsavam Admin' | 'Blood Donor Register Admin' | 'Blood Donor Super Admin'>('Super Admin');
   const [editAdminName, setEditAdminName] = useState('');
 
   const handleUpdateAdminUser = async (email: string) => {
-    if (currentUser.role !== 'Super Admin' && currentUser.role !== 'Admin') {
+    if (currentUser.role !== 'Super Admin') {
       triggerToast('Permission Denied: Only Super Admins or Admins can modify accounts!');
       return;
     }
@@ -1027,12 +1027,8 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
         stats_directors_count: uToSave.stats.directorsCount,
         description: uToSave.description,
         order_index: uToSave.orderIndex,
-        director_name: uToSave.directorName,
-        director_phone: uToSave.directorPhone,
         joint_director_name: uToSave.jointDirectorName,
-        joint_director_phone: uToSave.jointDirectorPhone,
-        president_name: uToSave.presidentName,
-        president_phone: uToSave.presidentPhone
+        joint_director_phone: uToSave.jointDirectorPhone
       });
     } catch (e: any) {
       console.error(e);
@@ -1349,17 +1345,20 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     { id: 'admins', label: 'Admin Accounts', icon: <Lock className="w-4 h-4" />, section: 'SYSTEM' },
     { id: 'logs', label: 'Activity Logs', icon: <Activity className="w-4 h-4" />, section: 'SYSTEM' }
   ].filter(item => {
-    if (currentUser.role === 'Kalolsavam Editor') {
+    if (currentUser.role === 'Kalolsavam Admin' || currentUser.role === 'Kalolsavam Editor') {
       return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants';
     }
-    if (currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') {
+    if (currentUser.role === 'Blood Donor Register Admin' || currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') {
+      return item.id === 'blood-donors' || item.id === 'logs';
+    }
+    if (currentUser.role === 'Blood Donor Super Admin') {
       return item.id === 'blood-donors' || item.id === 'logs';
     }
     if (item.id === 'admins') {
       return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
     }
     if (item.id === 'blood-donors') {
-      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin' || currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin';
+      return true; // Super Admin should see this
     }
     return true;
   });
@@ -3323,7 +3322,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
             </div>
             
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-[calc(100vh-200px)]">
-              <AdminBloodDonors />
+              <AdminBloodDonors currentUser={currentUser} />
             </div>
           </div>
         )}
@@ -3412,12 +3411,10 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                       onChange={(e) => setAdminForm({ ...adminForm, role: e.target.value as any })}
                       className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-emerald-500 transition-colors"
                     >
-                      <option value="Super Admin">Super Admin (All Permissions)</option>
-                      <option value="Admin">Admin (Full Dashboard Edit)</option>
-                      <option value="Editor">Editor (General Content Only)</option>
-                      <option value="Kalolsavam Editor">Kalolsavam Editor (Marks & Participants)</option>
-                      <option value="Blood Donor Admin">Blood Donor Admin (Blood Donors Only)</option>
-                      <option value="Shakha Admin">Shakha Admin (Blood Donors Only)</option>
+                      <option value="Super Admin">Super Admin (Full Access)</option>
+                      <option value="Kalolsavam Admin">Kalolsavam Admin (Kalolsavam & Participants)</option>
+                      <option value="Blood Donor Register Admin">Blood Donor Register Admin (Add/Edit Own Donors)</option>
+                      <option value="Blood Donor Super Admin">Blood Donor Super Admin (Manage All Donors)</option>
                     </select>
                   </div>
 
@@ -3538,11 +3535,9 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                                   className="w-full bg-white backdrop-blur-md border border-slate-880 p-2 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
                                 >
                                   <option value="Super Admin">Super Admin</option>
-                                  <option value="Admin">Admin</option>
-                                  <option value="Editor">Editor</option>
-                                  <option value="Kalolsavam Editor">Kalolsavam Editor</option>
-                                  <option value="Blood Donor Admin">Blood Donor Admin</option>
-                                  <option value="Shakha Admin">Shakha Admin</option>
+                                  <option value="Kalolsavam Admin">Kalolsavam Admin</option>
+                                  <option value="Blood Donor Register Admin">Blood Donor Register Admin</option>
+                                  <option value="Blood Donor Super Admin">Blood Donor Super Admin</option>
                                 </select>
                               </div>
                               <div className="flex flex-col gap-1">
