@@ -198,7 +198,7 @@ export default function App() {
         supabase.from('announcements').select('id, text, type, date, is_sticky').order('date', { ascending: false }).limit(20),
         supabase.from('news').select('id, title, body, category, image_url, date, is_featured').order('date', { ascending: false }).limit(10),
         supabase.from('office_bearers').select('id, name, designation, photo_url, contact, email, service_period, order_index, house_name, unit').order('order_index'),
-        supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, joint_director_name, joint_director_phone, director_name, director_phone, president_name, president_phone, stats_members, stats_families, stats_directors_count, description').order('order_index'),
+        supabase.from('units').select('id, name, patron_saint, contact_number, bg_photo, order_index, stats_members, stats_families, stats_directors_count, description').order('order_index'),
         supabase.from('events').select('id, title, type, date, time, venue, description, image_url, summary').order('date', { ascending: false }).limit(10),
         supabase.from('gallery_albums').select('id, title, category, description, cover_image_url'),
         supabase.from('downloads').select('id, title, type, size, date, file_url').order('date', { ascending: false }),
