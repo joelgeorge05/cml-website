@@ -1,5 +1,6 @@
 export const SHAKHA_OFFICIALS: Record<string, any> = {
-  "KYR03": {
+  // 1. Thommankuthu
+  "unit-5": {
     directorName: "Fr. James Aikkaramattam",
     directorPhone: "9446131957",
     jointDirectorName: "Sr. Mable FCC",
@@ -7,6 +8,7 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Alex Jojo",
     presidentPhone: "9656405484"
   },
+  // 2. Koduvely
   "KYR04": {
     directorName: "Fr Babu Mattathil CMI",
     directorPhone: "9847433009",
@@ -15,23 +17,26 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Luswin jaison",
     presidentPhone: "8078811268"
   },
-  "KYR01": {
+  // 3. Kaliyar
+  "unit-1": {
     directorName: "Fr.Thomas Pothanamuzhi",
-    directorPhone: "94478 22014",
+    directorPhone: "9447822014",
     jointDirectorName: "Sr.Rosmy SABS",
-    jointDirectorPhone: "80756 54816",
+    jointDirectorPhone: "8075654816",
     presidentName: "Christo Joby",
-    presidentPhone: "85908 96705"
+    presidentPhone: "8590896705"
   },
+  // 4. Thennathoor
   "KYR11": {
     directorName: "Fr Sebastian Thumbamattathil",
-    directorPhone: "82811 36402",
+    directorPhone: "8281136402",
     jointDirectorName: "Sr.Elsa Grace FCC",
     jointDirectorPhone: "7034477042",
     presidentName: "Georgin Jinish",
     presidentPhone: "8606279172"
   },
-  "KYR12": {
+  // 5. Vannappuram
+  "unit-2": {
     directorName: "Fr.Jacob Rathapillil",
     directorPhone: "9947511494",
     jointDirectorName: "Sr.Daisa SD",
@@ -39,6 +44,7 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Jeevan K J",
     presidentPhone: "9496089092"
   },
+  // 6. Paingottoor
   "KYR08": {
     directorName: "Fr. Kuriakose kodakkallil",
     directorPhone: "9447523068",
@@ -47,60 +53,22 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Alen emmanuel boby",
     presidentPhone: "7994080020"
   },
+  // 7. Mullaringad
   "KYR05": {
     directorName: "Fr Jacob vattapililll",
     directorPhone: "9961014934",
-    jointDirectorName: "Sr anupama SD",
-    jointDirectorPhone: "6282537483",
-    presidentName: "Amal joshy",
-    presidentPhone: "7510209472"
+    jointDirectorName: "Sr jaimy fcc",
+    jointDirectorPhone: "8078028729",
+    presidentName: "Alen shaji",
+    presidentPhone: "9562725832"
   },
-  "KYR10": {
-    directorName: "Fr.Sebastian Konthenppillil",
-    directorPhone: "9747499241",
-    jointDirectorName: "Sr.Jeena Paul CMC",
-    jointDirectorPhone: "7907816095",
-    presidentName: "Antony J Chacko",
-    presidentPhone: "9747499241"
-  },
-  "KYR06": {
-    directorName: "Fr joseph kochuputhanpurackal",
-    directorPhone: "9539881850",
-    jointDirectorName: "Sr:sherin SABS",
-    jointDirectorPhone: "8281619541",
-    presidentName: "jeswin jinson",
-    presidentPhone: "9447876965"
-  },
-  "KYR07": {
-    directorName: "Fr Antony Ovelil",
-    directorPhone: "7909246103",
-    jointDirectorName: "Sr Nirmal SH",
-    jointDirectorPhone: "8943898014",
-    presidentName: "Savio Jojo",
-    presidentPhone: "8590383939"
-  },
-  "KYR02": {
-    directorName: "Fr Mathew Edattu",
-    directorPhone: "8113032243",
-    jointDirectorName: "Jilsha George",
-    jointDirectorPhone: "9605085935",
-    presidentName: "George Baby",
-    presidentPhone: "9562381251"
-  },
+  // 8. Kodikulam
   "unit-3": {
-    directorName: "Fr Johnson Pazhayapeedikayil",
-    directorPhone: "83049 62687",
-    jointDirectorName: "Mrs Mini Babu",
-    jointDirectorPhone: "94956 84460",
-    presidentName: "Jose Juby",
-    presidentPhone: "9447823623"
-  },
-  "KYR09": {
-    directorName: "Fr. John Kadavan",
-    directorPhone: "94468 01191",
-    jointDirectorName: "Gisha Shaji",
-    jointDirectorPhone: "9207330608",
-    presidentName: "Alwin Vincent",
-    presidentPhone: "9061370062"
+    directorName: "Fr. Mathew kalappurakkal",
+    directorPhone: "9446820524",
+    jointDirectorName: "Sr. Liji SD",
+    jointDirectorPhone: "9656209564",
+    presidentName: "Albin Jose",
+    presidentPhone: "8089422079"
   }
 };
