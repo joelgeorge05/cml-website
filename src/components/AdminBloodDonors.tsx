@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
 import { Droplet, Search, MapPin, Phone, Calendar, Heart, ShieldAlert, Activity, CheckCircle2, XCircle, X, User, Map, Briefcase } from 'lucide-react';
 
-export default function AdminBloodDonors() {
+export default function AdminBloodDonors({ currentUser }: { currentUser?: any }) {
  const [donors, setDonors] = useState<any[]>([]);
  const [isLoading, setIsLoading] = useState(true);
  const [searchQuery, setSearchQuery] = useState('');
@@ -15,12 +15,19 @@ export default function AdminBloodDonors() {
 
  useEffect(() => {
  fetchDonors();
- }, []);
+ }, [currentUser]);
 
  const fetchDonors = async () => {
  setIsLoading(true);
  try {
- const { data, error } = await supabase.from('blood_donors').select('*').order('created_at', { ascending: false });
+ let query = supabase.from('blood_donors').select('*').order('created_at', { ascending: false });
+ 
+ // Apply RBAC filtering for Register Admins
+ if (currentUser?.role === 'Blood Donor Register Admin') {
+   query = query.eq('created_by_email', currentUser.email);
+ }
+ 
+ const { data, error } = await query;
  if (error) throw error;
  setDonors(data || []);
  } catch (err) {
@@ -39,6 +46,15 @@ export default function AdminBloodDonors() {
  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
  }, [donors]);
 
+ const adminCounts = useMemo(() => {
+ const counts: Record<string, number> = {};
+ donors.forEach(donor => {
+ const admin = donor.created_by_email || 'Unknown/Migrated';
+ counts[admin] = (counts[admin] || 0) + 1;
+ });
+ return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+ }, [donors]);
+
  const filteredDonors = useMemo(() => {
  return donors.filter(donor => {
  const matchesSearch = donor?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()) ||
@@ -52,6 +68,8 @@ export default function AdminBloodDonors() {
 
  const allShakhas = ['All', ...Array.from(new Set(donors.map(d => d.parish)))].filter(Boolean).sort();
 
+ const canViewAdminStats = currentUser?.role === 'Blood Donor Super Admin' || currentUser?.role === 'Super Admin';
+
  return (
  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
  
@@ -63,7 +81,7 @@ export default function AdminBloodDonors() {
  <Droplet className="w-6 h-6 text-white" />
  </div>
  <div>
- <h2 className="text-xl font-bold">Total Donors</h2>
+ <h2 className="text-xl font-bold">{currentUser?.role === 'Blood Donor Register Admin' ? 'Your Registered Donors' : 'Total Donors'}</h2>
  <p className="text-rose-100 text-sm">Across all shakhas</p>
  </div>
  </div>
@@ -77,38 +95,72 @@ export default function AdminBloodDonors() {
 
  <div className="lg:col-span-2 bg-white/70 rounded-3xl p-6 shadow-sm border border-slate-200/60 relative overflow-hidden group">
  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-rose-500/5 to-orange-500/5 blur-3xl -z-10 group-hover:from-rose-500/10 transition-colors duration-500" />
- <h3 className="text-lg font-black text-slate-900 mb-5 flex items-center gap-2">
- <MapPin className="w-5 h-5 text-rose-500" />
- Registrations by Shakha
- </h3>
- <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
- {shakhaCounts.length === 0 ? (
- <div className="col-span-full py-4 text-center">
- <p className="text-slate-500 text-sm font-medium">No registrations yet.</p>
- </div>
+ 
+ {canViewAdminStats ? (
+   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+     <div>
+       <h3 className="text-sm font-black text-slate-900 mb-3 flex items-center gap-2">
+       <MapPin className="w-4 h-4 text-rose-500" /> Registrations by Shakha
+       </h3>
+       <div className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
+       {shakhaCounts.map(([shakha, count]) => (
+       <div key={shakha} className="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-100 shadow-sm">
+       <span className="text-xs font-bold text-slate-700 truncate max-w-[120px]">{shakha}</span>
+       <span className="bg-rose-50 text-rose-600 text-[10px] font-black px-2 py-0.5 rounded-full">{count}</span>
+       </div>
+       ))}
+       </div>
+     </div>
+     <div>
+       <h3 className="text-sm font-black text-slate-900 mb-3 flex items-center gap-2">
+       <User className="w-4 h-4 text-rose-500" /> Added By Admin
+       </h3>
+       <div className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
+       {adminCounts.map(([admin, count]) => (
+       <div key={admin} className="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-100 shadow-sm">
+       <span className="text-[10px] font-bold text-slate-600 truncate max-w-[120px]" title={admin}>{admin}</span>
+       <span className="bg-indigo-50 text-indigo-600 text-[10px] font-black px-2 py-0.5 rounded-full">{count}</span>
+       </div>
+       ))}
+       </div>
+     </div>
+   </div>
  ) : (
- shakhaCounts.map(([shakha, count]) => {
- const maxCount = Math.max(...shakhaCounts.map(s => s[1]));
- const percentage = Math.max(5, (count / maxCount) * 100);
- return (
- <div key={shakha} className="flex flex-col gap-2 bg-white px-4 py-3 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
- <div className="flex items-center justify-between gap-2">
- <span className="text-xs font-bold text-slate-700 truncate">{shakha}</span>
- <span className="bg-gradient-to-br from-rose-500 to-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm">
- {count}
- </span>
- </div>
- <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
- <div 
- className="bg-gradient-to-r from-rose-400 to-rose-500 h-full rounded-full" 
- style={{ width: `${percentage}%` }}
- />
- </div>
- </div>
- );
- })
+   <>
+   <h3 className="text-lg font-black text-slate-900 mb-5 flex items-center gap-2">
+   <MapPin className="w-5 h-5 text-rose-500" />
+   Registrations by Shakha
+   </h3>
+   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
+   {shakhaCounts.length === 0 ? (
+   <div className="col-span-full py-4 text-center">
+   <p className="text-slate-500 text-sm font-medium">No registrations yet.</p>
+   </div>
+   ) : (
+   shakhaCounts.map(([shakha, count]) => {
+   const maxCount = Math.max(...shakhaCounts.map(s => s[1]));
+   const percentage = Math.max(5, (count / maxCount) * 100);
+   return (
+   <div key={shakha} className="flex flex-col gap-2 bg-white px-4 py-3 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+   <div className="flex items-center justify-between gap-2">
+   <span className="text-xs font-bold text-slate-700 truncate">{shakha}</span>
+   <span className="bg-gradient-to-br from-rose-500 to-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm">
+   {count}
+   </span>
+   </div>
+   <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+   <div 
+   className="bg-gradient-to-r from-rose-400 to-rose-500 h-full rounded-full" 
+   style={{ width: `${percentage}%` }}
+   />
+   </div>
+   </div>
+   );
+   })
+   )}
+   </div>
+   </>
  )}
- </div>
  </div>
  </div>
 

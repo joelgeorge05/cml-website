@@ -147,7 +147,7 @@ export interface PortalSettings {
 export interface UserRole {
   email: string;
   name: string;
-  role: 'Super Admin' | 'Admin' | 'Editor' | 'Kalolsavam Editor' | 'Blood Donor Admin' | 'Shakha Admin';
+  role: 'Super Admin' | 'Kalolsavam Admin' | 'Blood Donor Register Admin' | 'Blood Donor Super Admin';
   lastActive?: string;
   password?: string;
 }
