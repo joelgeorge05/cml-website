@@ -1,5 +1,5 @@
 export const SHAKHA_OFFICIALS: Record<string, any> = {
-  "unit-5": {
+  "KYR03": {
     directorName: "Fr. James Aikkaramattam",
     directorPhone: "9446131957",
     jointDirectorName: "Sr. Mable FCC",
@@ -15,7 +15,7 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Luswin jaison",
     presidentPhone: "8078811268"
   },
-  "unit-1": {
+  "KYR01": {
     directorName: "Fr.Thomas Pothanamuzhi",
     directorPhone: "94478 22014",
     jointDirectorName: "Sr.Rosmy SABS",
@@ -31,7 +31,7 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
     presidentName: "Georgin Jinish",
     presidentPhone: "8606279172"
   },
-  "unit-2": {
+  "KYR12": {
     directorName: "Fr.Jacob Rathapillil",
     directorPhone: "9947511494",
     jointDirectorName: "Sr.Daisa SD",
