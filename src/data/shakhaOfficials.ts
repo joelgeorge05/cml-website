@@ -1,4 +1,4 @@
-﻿export const SHAKHA_OFFICIALS: Record<string, any> = {
+export const SHAKHA_OFFICIALS: Record<string, any> = {
   "unit-5": {
     directorName: "Fr. James Aikkaramattam",
     directorPhone: "9446131957",
