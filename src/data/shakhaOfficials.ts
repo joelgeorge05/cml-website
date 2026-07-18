@@ -20,16 +20,16 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
   // 3. Kaliyar
   "unit-1": {
     directorName: "Fr.Thomas Pothanamuzhi",
-    directorPhone: "9447822014",
+    directorPhone: "94478 22014",
     jointDirectorName: "Sr.Rosmy SABS",
-    jointDirectorPhone: "8075654816",
+    jointDirectorPhone: "80756 54816",
     presidentName: "Christo Joby",
-    presidentPhone: "8590896705"
+    presidentPhone: "85908 96705"
   },
   // 4. Thennathoor
   "KYR11": {
     directorName: "Fr Sebastian Thumbamattathil",
-    directorPhone: "8281136402",
+    directorPhone: "82811 36402",
     jointDirectorName: "Sr.Elsa Grace FCC",
     jointDirectorPhone: "7034477042",
     presidentName: "Georgin Jinish",
@@ -57,18 +57,63 @@ export const SHAKHA_OFFICIALS: Record<string, any> = {
   "KYR05": {
     directorName: "Fr Jacob vattapililll",
     directorPhone: "9961014934",
-    jointDirectorName: "Sr jaimy fcc",
-    jointDirectorPhone: "8078028729",
-    presidentName: "Alen shaji",
-    presidentPhone: "9562725832"
+    jointDirectorName: "Sr anupama SD",
+    jointDirectorPhone: "6282537483",
+    presidentName: "Amal joshy",
+    presidentPhone: "7510209472"
   },
-  // 8. Kodikulam
+  // 8. Rajagiri
+  "KYR10": {
+    directorName: "Fr.Sebastian Konthenppillil",
+    directorPhone: "9747499241",
+    jointDirectorName: "Sr.Jeena Paul CMC",
+    jointDirectorPhone: "7907816095",
+    presidentName: "Antony J Chacko",
+    presidentPhone: "9747499241"
+  },
+  // 9. Mundanmudy
+  "KYR06": {
+    directorName: "Fr joseph kochuputhanpurackal",
+    directorPhone: "9539881850",
+    jointDirectorName: "Sr:sherin SABS",
+    jointDirectorPhone: "8281619541",
+    presidentName: "jeswin jinson",
+    presidentPhone: "9447876965"
+  },
+  // 10. Njarakkad
+  "KYR07": {
+    directorName: "Fr Antony Ovelil",
+    directorPhone: "7909246103",
+    jointDirectorName: "Sr Nirmal SH",
+    jointDirectorPhone: "8943898014",
+    presidentName: "Savio Jojo",
+    presidentPhone: "8590383939"
+  },
+  // 11. Kadavoor
+  "KYR02": {
+    directorName: "Fr Mathew Edattu",
+    directorPhone: "8113032243",
+    jointDirectorName: "Jilsha George",
+    jointDirectorPhone: "9605085935",
+    presidentName: "George Baby",
+    presidentPhone: "9562381251"
+  },
+  // 12. Kodikulam
   "unit-3": {
-    directorName: "Fr. Mathew kalappurakkal",
-    directorPhone: "9446820524",
-    jointDirectorName: "Sr. Liji SD",
-    jointDirectorPhone: "9656209564",
-    presidentName: "Albin Jose",
-    presidentPhone: "8089422079"
+    directorName: "Fr Johnson Pazhayapeedikayil",
+    directorPhone: "83049 62687",
+    jointDirectorName: "Mrs Mini Babu",
+    jointDirectorPhone: "94956 84460",
+    presidentName: "Jose Juby",
+    presidentPhone: "9447823623"
+  },
+  // 13. Punnamattom
+  "KYR09": {
+    directorName: "Fr. John Kadavan",
+    directorPhone: "94468 01191",
+    jointDirectorName: "Gisha Shaji",
+    jointDirectorPhone: "9207330608",
+    presidentName: "Alwin Vincent",
+    presidentPhone: "9061370062"
   }
 };
