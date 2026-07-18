@@ -65,9 +65,10 @@ export default function UnitsView({ units }: UnitsViewProps) {
  units.map((un, idx) => {
  return (
  <motion.div
- initial={{ opacity: 0, y: 30 }}
- animate={{ opacity: 1, y: 0 }}
- transition={{ delay: 0.1 + (idx * 0.05) }}
+ initial={{ opacity: 0, y: 20 }}
+ whileInView={{ opacity: 1, y: 0 }}
+ viewport={{ once: true, margin: "100px" }}
+ transition={{ duration: 0.4 }}
  key={un.id}
  className="bg-white/70 rounded-[32px] border border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 text-left"
  >
@@ -75,14 +76,14 @@ export default function UnitsView({ units }: UnitsViewProps) {
  <div role="img" aria-label={un.name} className="h-48 rounded-t-[32px] bg-slate-100 relative overflow-hidden flex items-center justify-center">
  {/* Subtle gradient just for the top badge visibility */}
  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent z-10" />
- {/* Shimmer skeleton shown while image loads */}
- <div className="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse z-0" />
+ {/* Static placeholder shown while image loads */}
+ <div className="absolute inset-0 bg-slate-200 z-0" />
  <img
  src={un.bgPhoto}
  alt={un.name}
- loading={idx < 4 ? "eager" : "lazy"}
+ loading={idx < 2 ? "eager" : "lazy"}
  decoding="async"
- className={`w-full h-full absolute inset-0 z-0 transition-transform duration-700 transform ${
+ className={`w-full h-full absolute inset-0 z-0 transition-transform duration-700 transform-gpu ${
  un.name.includes('Koduvely') ? 'object-cover object-top scale-100 group-hover:scale-110' :
  un.name.includes('Mundanmudy') ? 'object-cover object-bottom scale-125 group-hover:scale-150' :
  un.name.includes('Thennathoor') ? 'object-cover object-[center_60%] scale-100 group-hover:scale-105' :
