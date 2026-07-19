@@ -599,11 +599,11 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
       if (signUpError) {
         if (signUpError.message.toLowerCase().includes('rate limit')) {
-          triggerToast(`Notice: Supabase email rate limit hit, but provisioning local access anyway.`);
+          triggerToast(`Error: Rate limit hit. Please adjust Supabase rate limit settings to create more users.`);
         } else {
-          triggerToast(`Supabase Auth Error: ${signUpError.message}. Proceeding locally.`);
+          triggerToast(`Supabase Auth Error: ${signUpError.message}`);
         }
-        // Do NOT return here. Continue to provision the user locally to bypass limitations.
+        return; // Hard fail if Auth fails
       }
       
       // Store ID if successfully created in Supabase Auth
@@ -619,7 +619,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       name: adminForm.name.trim(),
       email: emailClean,
       role: adminForm.role,
-      password: adminForm.password.trim()
+      created_at: new Date().toISOString()
     };
 
     const updated = {

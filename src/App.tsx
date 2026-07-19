@@ -262,27 +262,7 @@ export default function App() {
           downloadUrl: d.file_url 
         })),
         bloodDonors: (bloodDonors?.data ?? []).map((b: any) => ({ ...b })),
-        users: (() => {
-          const dbUsers = adminAccounts?.data || [];
-          let localUsers = [];
-          try {
-            const ls = localStorage.getItem('cml_dynamic_admins');
-            if (ls) localUsers = JSON.parse(ls);
-          } catch (e) {}
-          
-          // Merge dbUsers with localUsers to preserve the password field stored locally
-          const merged = dbUsers.map((dbUser: any) => {
-            const localMatch = localUsers.find((lu: any) => lu.email === dbUser.email);
-            return localMatch ? { ...dbUser, password: localMatch.password } : dbUser;
-          });
-          
-          for (const lu of localUsers) {
-            if (!merged.find((u: any) => u.email === lu.email)) {
-              merged.push(lu);
-            }
-          }
-          return merged;
-        })(),
+        users: (adminAccounts?.data || []).map((b: any) => ({ ...b })),
         chosenRegistrations: (() => {
           return localStorage.getItem('cml_chosen_registrations') ? 
             JSON.parse(localStorage.getItem('cml_chosen_registrations')!) : 
@@ -290,10 +270,6 @@ export default function App() {
         })()
       };
 
-      // Sync local dynamic admins storage cache
-      if (freshData.users.length > 0) {
-        localStorage.setItem('cml_dynamic_admins', JSON.stringify(freshData.users));
-      }
 
       // Update state silently in background and save to cache
       setDbData(freshData);
@@ -428,34 +404,7 @@ export default function App() {
  loginEmail = `${loginEmail}@shakha.cml`;
  }
 
- // Check dynamic local admin accounts first to bypass Supabase Auth limitations
- try {
- const cachedStr = localStorage.getItem('cml_dynamic_admins');
- if (cachedStr) {
- const dynamicAdmins = JSON.parse(cachedStr);
- const localUser = dynamicAdmins.find((u: any) => u.email?.toLowerCase() === loginEmail && u.password === password.trim());
- if (localUser) {
- setCurrentUser({
- id: 'dynamic-' + localUser.email,
- email: localUser.email,
- user_metadata: { name: localUser.name, role: localUser.role },
- role: localUser.role
- } as any);
- if (localUser.role === 'shakha') {
- handleSetActiveTab('blood-donors');
- } else {
- handleSetActiveTab('admin');
- }
- setEmail('');
- setPassword('');
- setIsLoggingIn(false);
- return;
- }
- }
- } catch (e) {
- console.error('Error parsing dynamic admins', e);
- }
-
+ // Attempt login using standard Supabase Auth
  try {
  // Authenticate with local secure backend to get JWT token
  try {
