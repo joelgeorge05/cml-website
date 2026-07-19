@@ -1350,7 +1350,10 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     { id: 'admins', label: 'Admin Accounts', icon: <Lock className="w-4 h-4" />, section: 'SYSTEM' },
     { id: 'logs', label: 'Activity Logs', icon: <Activity className="w-4 h-4" />, section: 'SYSTEM' }
   ].filter(item => {
-    if (currentUser.role === 'Kalolsavam Admin' || currentUser.role === 'Kalolsavam Editor') {
+    if (currentUser.role === 'Kalolsavam Admin') {
+      return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants' || item.id === 'overview';
+    }
+    if (currentUser.role === 'Kalolsavam Editor') {
       return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants';
     }
     if (currentUser.role === 'Blood Donor Register Admin' || currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') {
@@ -1365,8 +1368,8 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     if (item.id === 'admins') {
       return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
     }
-    if (item.id === 'blood-donors') {
-      return true; // Super Admin should see this
+    if (item.id === 'overview') {
+      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin' || currentUser.role === 'Kalolsavam Admin';
     }
     return true;
   });
