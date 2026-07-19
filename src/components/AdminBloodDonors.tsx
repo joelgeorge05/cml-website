@@ -1,7 +1,39 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
-import { Droplet, Search, MapPin, Phone, Calendar, Heart, ShieldAlert, Activity, CheckCircle2, XCircle, X, User, Map, Briefcase } from 'lucide-react';
+import { Droplet, Search, MapPin, Phone, Calendar, Heart, ShieldAlert, Activity, CheckCircle2, XCircle, X, User, Map, Briefcase, ChevronDown } from 'lucide-react';
+
+const CustomDropdown = ({ value, onChange, options, placeholder }: { value: string, onChange: (val: string) => void, options: {value: string, label: string}[], placeholder: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button 
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-slate-700 font-medium bg-white flex items-center justify-between min-w-[180px] hover:bg-slate-50 transition-colors shadow-sm"
+      >
+        <span className="truncate">{options.find(o => o.value === value)?.label || placeholder}</span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-rose-500' : ''}`} />
+      </button>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          <div className="absolute top-full left-0 mt-2 w-full bg-white border border-slate-100 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] z-50 max-h-64 overflow-y-auto py-2 overflow-hidden ring-1 ring-slate-900/5 origin-top animate-in fade-in slide-in-from-top-2">
+            {options.map(opt => (
+              <div
+                key={opt.value}
+                onClick={() => { onChange(opt.value); setIsOpen(false); }}
+                className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${value === opt.value ? 'bg-rose-50 text-rose-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              >
+                {opt.label}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default function AdminBloodDonors({ currentUser }: { currentUser?: any }) {
  const [donors, setDonors] = useState<any[]>([]);
@@ -182,25 +214,24 @@ export default function AdminBloodDonors({ currentUser }: { currentUser?: any })
  className="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 w-full sm:w-64"
  />
  </div>
- <select
- value={selectedBloodGroup}
- onChange={(e) => setSelectedBloodGroup(e.target.value)}
- className="px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-slate-700 font-medium bg-white"
- >
- <option value="All">All Blood Groups</option>
- {BLOOD_GROUPS.map(bg => (
- <option key={bg} value={bg}>{bg}</option>
- ))}
- </select>
- <select
- value={selectedShakha}
- onChange={(e) => setSelectedShakha(e.target.value)}
- className="px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-slate-700 font-medium bg-white"
- >
- {allShakhas.map(s => (
- <option key={s} value={s}>{s === 'All' ? 'All Shakhas' : s}</option>
- ))}
- </select>
+  <CustomDropdown
+    value={selectedBloodGroup}
+    onChange={setSelectedBloodGroup}
+    placeholder="All Blood Groups"
+    options={[
+      { value: 'All', label: 'All Blood Groups' },
+      ...BLOOD_GROUPS.map(bg => ({ value: bg, label: bg }))
+    ]}
+  />
+  <CustomDropdown
+    value={selectedShakha}
+    onChange={setSelectedShakha}
+    placeholder="All Shakhas"
+    options={allShakhas.map(s => ({
+      value: s,
+      label: s === 'All' ? 'All Shakhas' : s
+    }))}
+  />
  </div>
  </div>
 
