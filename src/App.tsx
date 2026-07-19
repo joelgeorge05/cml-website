@@ -340,6 +340,7 @@ export default function App() {
         const newUser = updatedData.users?.find((u: any) => u.email?.toLowerCase().trim() === emailToCreate);
         if (newUser) {
           await supabase.from('admin_accounts').insert({
+            id: crypto.randomUUID(),
             email: newUser.email,
             name: newUser.name,
             role: newUser.role
