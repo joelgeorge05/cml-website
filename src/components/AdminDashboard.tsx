@@ -1354,10 +1354,13 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       return item.id === 'kalolsavam-marks' || item.id === 'sahithyamalsaram-marks' || item.id === 'participants';
     }
     if (currentUser.role === 'Blood Donor Register Admin' || currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') {
-      return item.id === 'blood-donors' || item.id === 'logs';
+      return item.id === 'blood-donors';
     }
     if (currentUser.role === 'Blood Donor Super Admin') {
-      return item.id === 'blood-donors' || item.id === 'logs';
+      return item.id === 'blood-donors';
+    }
+    if (item.id === 'logs') {
+      return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
     }
     if (item.id === 'admins') {
       return currentUser.role === 'Super Admin' || currentUser.role === 'Admin';
