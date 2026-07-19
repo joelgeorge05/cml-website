@@ -332,11 +332,21 @@ export default function App() {
  }
  }
 
- // Sync Admin Accounts table with Supabase
- if (action === 'CREATE_ADMIN_ACCOUNT' || action === 'UPDATE_ADMIN_ACCOUNT' || action === 'REVOKE_ADMIN_ACCOUNT') {
-   try {
-     if (action === 'UPDATE_ADMIN_ACCOUNT') {
-       const emailToUpdate = target.split(' ')[0].toLowerCase().trim();
+  // Sync Admin Accounts table with Supabase
+  if (action === 'CREATE_ADMIN_ACCOUNT' || action === 'UPDATE_ADMIN_ACCOUNT' || action === 'REVOKE_ADMIN_ACCOUNT') {
+    try {
+      if (action === 'CREATE_ADMIN_ACCOUNT') {
+        const emailToCreate = target.split(' ')[0].toLowerCase().trim();
+        const newUser = updatedData.users?.find((u: any) => u.email?.toLowerCase().trim() === emailToCreate);
+        if (newUser) {
+          await supabase.from('admin_accounts').insert({
+            email: newUser.email,
+            name: newUser.name,
+            role: newUser.role
+          });
+        }
+      } else if (action === 'UPDATE_ADMIN_ACCOUNT') {
+        const emailToUpdate = target.split(' ')[0].toLowerCase().trim();
        const updatedUser = updatedData.users?.find((u: any) => u.email?.toLowerCase().trim() === emailToUpdate);
        if (updatedUser) {
          await supabase.from('admin_accounts').update({
