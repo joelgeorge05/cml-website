@@ -262,7 +262,21 @@ export default function App() {
           downloadUrl: d.file_url 
         })),
         bloodDonors: (bloodDonors?.data ?? []).map((b: any) => ({ ...b })),
-        users: adminAccounts?.data || [],
+        users: (() => {
+          const dbUsers = adminAccounts?.data || [];
+          let localUsers = [];
+          try {
+            const ls = localStorage.getItem('cml_dynamic_admins');
+            if (ls) localUsers = JSON.parse(ls);
+          } catch (e) {}
+          const merged = [...dbUsers];
+          for (const lu of localUsers) {
+            if (!merged.find((u: any) => u.email === lu.email)) {
+              merged.push(lu);
+            }
+          }
+          return merged;
+        })(),
         chosenRegistrations: (() => {
           return localStorage.getItem('cml_chosen_registrations') ? 
             JSON.parse(localStorage.getItem('cml_chosen_registrations')!) : 
@@ -338,9 +352,9 @@ export default function App() {
       if (action === 'CREATE_ADMIN_ACCOUNT') {
         const emailToCreate = target.split(' ')[0].toLowerCase().trim();
         const newUser = updatedData.users?.find((u: any) => u.email?.toLowerCase().trim() === emailToCreate);
-        if (newUser) {
+        if (newUser && newUser.id) {
           await supabase.from('admin_accounts').insert({
-            id: crypto.randomUUID(),
+            id: newUser.id,
             email: newUser.email,
             name: newUser.name,
             role: newUser.role

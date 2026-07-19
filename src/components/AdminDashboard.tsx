@@ -586,7 +586,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
         { auth: { persistSession: false, autoRefreshToken: false } }
       );
 
-      const { error: signUpError } = await tempClient.auth.signUp({
+      const { data: signUpData, error: signUpError } = await tempClient.auth.signUp({
         email: emailClean,
         password: adminForm.password.trim(),
         options: {
@@ -605,12 +605,17 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
         }
         // Do NOT return here. Continue to provision the user locally to bypass limitations.
       }
+      
+      // Store ID if successfully created in Supabase Auth
+      var newAuthId = signUpData?.user?.id;
+      
     } catch (err) {
       triggerToast('Network Error: Could not reach authentication server.');
       return;
     }
 
     const newAdmin = {
+      id: typeof newAuthId !== 'undefined' ? newAuthId : undefined,
       name: adminForm.name.trim(),
       email: emailClean,
       role: adminForm.role,
