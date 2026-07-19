@@ -269,7 +269,13 @@ export default function App() {
             const ls = localStorage.getItem('cml_dynamic_admins');
             if (ls) localUsers = JSON.parse(ls);
           } catch (e) {}
-          const merged = [...dbUsers];
+          
+          // Merge dbUsers with localUsers to preserve the password field stored locally
+          const merged = dbUsers.map((dbUser: any) => {
+            const localMatch = localUsers.find((lu: any) => lu.email === dbUser.email);
+            return localMatch ? { ...dbUser, password: localMatch.password } : dbUser;
+          });
+          
           for (const lu of localUsers) {
             if (!merged.find((u: any) => u.email === lu.email)) {
               merged.push(lu);
