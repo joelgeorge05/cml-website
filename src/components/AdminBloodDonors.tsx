@@ -197,7 +197,7 @@ export default function AdminBloodDonors({ currentUser }: { currentUser?: any })
  </div>
 
  {/* Main Table Section */}
- <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+ <div className="bg-white rounded-2xl shadow-sm border border-slate-100">
  <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
  <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
  <Heart className="w-5 h-5 text-rose-500" />
