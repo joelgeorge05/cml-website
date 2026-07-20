@@ -3339,7 +3339,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-[calc(100vh-200px)]">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
               <AdminBloodDonors currentUser={currentUser} />
             </div>
           </div>
