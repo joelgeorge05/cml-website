@@ -1492,7 +1492,7 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
 
   return (
 
-    <div className="w-full min-h-screen bg-slate-50 text-slate-900 flex flex-col lg:flex-row shadow-inner relative overflow-hidden">
+    <div className="w-full flex-1 bg-slate-50 text-slate-900 flex flex-col lg:flex-row shadow-inner relative">
       {/* Background Ambience Removed */}
       
       {/* Toast persistent notification overlay */}
