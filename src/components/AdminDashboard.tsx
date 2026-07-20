@@ -84,10 +84,14 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, onLogout, onGoToTab }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<string>(
-    currentUser.role === 'Kalolsavam Editor' ? 'kalolsavam-marks' : 
-    (currentUser.role === 'Blood Donor Admin' || currentUser.role === 'Shakha Admin' || currentUser.role === 'Shakha' || currentUser.role === 'shakha') ? 'blood-donors' : 'overview'
-  );
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (currentUser.role === 'Kalolsavam Editor') return 'kalolsavam-marks';
+    const r = currentUser.role;
+    if (r === 'Blood Donor Register Admin' || r === 'Blood Donor Super Admin' || r === 'Blood Donor Admin' || r === 'Shakha Admin' || r === 'Shakha' || r === 'shakha') {
+      return 'blood-donors';
+    }
+    return 'overview';
+  });
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
