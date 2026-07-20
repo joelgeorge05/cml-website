@@ -586,9 +586,15 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
     var newAuthId;
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token || localStorage.getItem('cml_jwt_token') || '';
+
       const response = await fetch('/api/create-admin', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           email: emailClean,
           password: adminForm.password.trim(),
