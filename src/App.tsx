@@ -249,7 +249,8 @@ export default function App() {
               members: u.stats_members, 
               families: u.stats_families, 
               directorsCount: u.stats_directors_count 
-            } 
+            },
+            description: u.description
           };
         }),
         events: (events.data ?? []).map((e: any) => ({ ...e, imageUrl: e.image_url })),
