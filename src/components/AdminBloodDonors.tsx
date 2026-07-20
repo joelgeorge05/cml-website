@@ -235,7 +235,7 @@ export default function AdminBloodDonors({ currentUser }: { currentUser?: any })
  </div>
  </div>
 
- <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
+ <div className="overflow-x-auto pb-6">
  {isLoading ? (
  <div className="p-8 text-center text-slate-500 flex flex-col items-center justify-center">
  <div className="w-8 h-8 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mb-4"></div>
