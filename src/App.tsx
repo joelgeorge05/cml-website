@@ -399,10 +399,10 @@ export default function App() {
  setLoginError(null);
 
  // Format username to hidden email if it doesn't contain @
- let loginEmail = email.trim().toLowerCase();
- if (loginType === 'shakha' && !loginEmail.includes('@')) {
- loginEmail = `${loginEmail}@shakha.cml`;
- }
+  let loginEmail = email.trim().toLowerCase();
+  if (!loginEmail.includes('@')) {
+    loginEmail = `${loginEmail}@shakha.cml`;
+  }
 
  // Attempt login using standard Supabase Auth
  try {

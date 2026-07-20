@@ -567,7 +567,11 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       return;
     }
 
-    const emailClean = adminForm.email.trim().toLowerCase();
+    let rawUsername = adminForm.email.trim().toLowerCase();
+    if (rawUsername && !rawUsername.includes('@')) {
+      rawUsername = `${rawUsername}@shakha.cml`;
+    }
+    const emailClean = rawUsername;
     
     // Check if user already exists
     const existsDynamic = (dbData.users || []).some((u: any) => u.email?.toLowerCase() === emailClean);
@@ -579,35 +583,28 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
       return;
     }
 
+    var newAuthId;
+
     try {
-      const tempClient = createClient(
-        import.meta.env.VITE_SUPABASE_URL,
-        import.meta.env.VITE_SUPABASE_ANON_KEY,
-        { auth: { persistSession: false, autoRefreshToken: false } }
-      );
-
-      const { data: signUpData, error: signUpError } = await tempClient.auth.signUp({
-        email: emailClean,
-        password: adminForm.password.trim(),
-        options: {
-          data: {
-            name: adminForm.name.trim(),
-            role: adminForm.role
-          }
-        }
+      const response = await fetch('/api/create-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailClean,
+          password: adminForm.password.trim(),
+          name: adminForm.name.trim(),
+          role: adminForm.role
+        })
       });
-
-      if (signUpError) {
-        if (signUpError.message.toLowerCase().includes('rate limit')) {
-          triggerToast(`Error: Rate limit hit. Please adjust Supabase rate limit settings to create more users.`);
-        } else {
-          triggerToast(`Supabase Auth Error: ${signUpError.message}`);
-        }
-        return; // Hard fail if Auth fails
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        triggerToast(`Backend Error: ${result.error || 'Failed to create user'}`);
+        return;
       }
       
-      // Store ID if successfully created in Supabase Auth
-      var newAuthId = signUpData?.user?.id;
+      newAuthId = result.user?.id;
       
     } catch (err) {
       triggerToast('Network Error: Could not reach authentication server.');
@@ -3405,12 +3402,12 @@ export default function AdminDashboard({ dbData, currentUser, onSaveDatabase, on
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-slate-600 text-[10px] uppercase font-bold">Email / Username</label>
+                    <label className="text-slate-600 text-[10px] uppercase font-bold">Username / ID (e.g. CML104)</label>
                     <input
                       type="text"
                       value={adminForm.email}
                       onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
-                      placeholder="e.g. leader@cmlkaliyar.org"
+                      placeholder="e.g. CML104 or admin@shakha.cml"
                       className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-emerald-500 transition-colors placeholder:lowercase"
                     />
                   </div>
