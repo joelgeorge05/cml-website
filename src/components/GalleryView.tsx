@@ -63,12 +63,7 @@ export default function GalleryView({ albums }: GalleryViewProps) {
  
  {/* Title Presentation Block */}
  <div className="flex flex-col items-center text-center gap-4 max-w-3xl mx-auto w-full mb-2 border-b border-slate-200/60 pb-8">
- <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-rose-50 border border-rose-100 rounded-full shadow-3xs">
- <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
- <span className="text-[10px] font-mono font-black text-rose-800 tracking-widest uppercase">
- Visual Archives & Memories
- </span>
- </div>
+
 
  <h2 className="font-serif font-black text-4xl sm:text-5xl md:text-6xl text-black tracking-tight leading-none pb-1">
  Mekhala Media Gallery

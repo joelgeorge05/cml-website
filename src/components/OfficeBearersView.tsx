@@ -213,15 +213,7 @@ export default function OfficeBearersView({ bearers, dbData, isAdminLoggedIn, on
  
  {/* Title Presentation */}
  <div className="flex flex-col items-center text-center gap-5 max-w-4xl mx-auto">
- <motion.div 
- initial={{ opacity: 0, y: -20 }}
- animate={{ opacity: 1, y: 0 }}
- className="inline-flex items-center justify-center px-6 py-2 bg-amber-50/80 border border-amber-200/50 rounded-full shadow-sm"
- >
- <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 tracking-[0.3em] uppercase font-sans">
- Official Leadership Council
- </span>
- </motion.div>
+
 
  <motion.h2 
  initial={{ opacity: 0, y: 20 }}
