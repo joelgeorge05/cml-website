@@ -219,7 +219,7 @@ export default function Header({
  {isOfflineFallback && (
  <div className="flex mt-1.5">
  <span className="px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[7.5px] font-mono font-bold tracking-wider uppercase shadow-xs flex items-center gap-1 shrink-0">
- <span className="w-1 h-1 rounded-full bg-amber-400 inline-block animate-pulse"></span>
+ <span className="w-1 h-1 rounded-full bg-amber-400 inline-block "></span>
  Offline
  </span>
  </div>
@@ -280,7 +280,7 @@ export default function Header({
  {/* Glassmorphic Live Date Obsidian Card */}
  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/50 text-[8.5px] font-mono font-bold tracking-wider text-slate-350 shadow-[0_1px_8px_rgba(255,255,255,0.02)] relative overflow-hidden group">
  <div className="absolute inset-0 w-[40px] h-full bg-white/5" style={{ animation: 'shimmer 4s infinite linear' }} />
- <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_#f59e0b] shrink-0"></span>
+ <span className="w-1 h-1 rounded-full bg-amber-400  shadow-[0_0_8px_#f59e0b] shrink-0"></span>
  <span>{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}</span>
  </div>
  </div>
@@ -329,7 +329,7 @@ export default function Header({
  {/* Part 1 */}
  {scrollItems.map((item, idx) => (
  <div key={`part1-${idx}`} className="flex items-center gap-2">
- <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 inline-block animate-pulse"></span>
+ <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 inline-block "></span>
  <span>{item.text}</span>
  {item.date && (
  <span className="text-[9px] font-bold text-rose-300 bg-rose-950/65 font-mono px-2 py-0.5 rounded-md border border-rose-800/40 shrink-0">
@@ -341,7 +341,7 @@ export default function Header({
  {/* Part 2: Identical Twin for Seamless Loop */}
  {scrollItems.map((item, idx) => (
  <div key={`part2-${idx}`} className="flex items-center gap-2">
- <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 inline-block animate-pulse"></span>
+ <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 inline-block "></span>
  <span>{item.text}</span>
  {item.date && (
  <span className="text-[9px] font-bold text-rose-300 bg-rose-950/65 font-mono px-2 py-0.5 rounded-md border border-rose-800/40 shrink-0">
@@ -505,7 +505,7 @@ export default function Header({
  <span>KALOLSAVAM 2026</span>
  </button>
  {activeTab === 'kalolsavam' && (
- <span className="absolute -bottom-2.5 w-10 h-1 bg-rose-600 rounded-full animate-pulse shadow-xs" />
+ <span className="absolute -bottom-2.5 w-10 h-1 bg-rose-600 rounded-full  shadow-xs" />
  )}
  </div>
  )}
@@ -524,7 +524,7 @@ export default function Header({
  <span>SAHITHYAMALSARAM 2026</span>
  </button>
  {activeTab === 'sahithyamalsaram' && (
- <span className="absolute -bottom-2.5 w-10 h-1 bg-amber-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)]" />
+ <span className="absolute -bottom-2.5 w-10 h-1 bg-amber-600 rounded-full  shadow-[0_0_8px_rgba(217,119,6,0.8)]" />
  )}
  </div>
  )}
@@ -543,7 +543,7 @@ export default function Header({
  <span>CHOSEN 2026</span>
  </button>
  {activeTab === 'chosen' && (
- <span className="absolute -bottom-2.5 w-10 h-1 bg-indigo-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
+ <span className="absolute -bottom-2.5 w-10 h-1 bg-indigo-600 rounded-full  shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
  )}
  </div>
  )}

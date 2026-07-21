@@ -114,3 +114,8 @@ button, a {
  display: none;
 }
 
+
+/* Disable all pulse animations globally as requested */
+.animate-pulse {
+  animation: none !important;
+}
