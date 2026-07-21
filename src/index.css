@@ -116,6 +116,7 @@ button, a {
 
 
 /* Disable all pulse animations globally as requested */
-.animate-pulse {
+.animate-pulse, .animate-ping {
   animation: none !important;
+  display: none !important;
 }
