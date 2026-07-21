@@ -300,9 +300,7 @@ export default function OfficeBearersView({ bearers, dbData, isAdminLoggedIn, on
  
  {/* Parish Unit */}
  <div className="flex items-center gap-3 w-full bg-white/50 rounded-xl py-2 px-2.5 border border-slate-200 group-hover:bg-white group-hover:border-slate-300 group-hover:shadow-sm transition-all">
- <div className={`w-8 h-8 rounded-lg ${isSpiritual ? 'bg-amber-100/50 text-amber-600' : 'bg-rose-100/50 text-rose-600'} flex items-center justify-center shrink-0`}>
- <MapPin className="w-3.5 h-3.5" />
- </div>
+
  <div className="flex flex-col items-start min-w-0 flex-1 text-left">
  <span className="text-[9px] font-['Outfit'] font-bold text-slate-400 tracking-widest uppercase">Shakha</span>
  <span className="text-slate-800 text-[13px] font-bold truncate w-full">{ob.unit || 'Kaliyar Mekhala HQ'}</span>
@@ -312,9 +310,7 @@ export default function OfficeBearersView({ bearers, dbData, isAdminLoggedIn, on
  {/* House Name */}
  {ob.houseName && (
  <div className="flex items-center gap-3 w-full bg-white/50 rounded-xl py-2 px-2.5 border border-slate-200 group-hover:bg-white group-hover:border-slate-300 group-hover:shadow-sm transition-all">
- <div className={`w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0`}>
- <Home className="w-3.5 h-3.5" />
- </div>
+
  <div className="flex flex-col items-start min-w-0 flex-1 text-left">
  <span className="text-[9px] font-['Outfit'] font-bold text-slate-400 tracking-widest uppercase">House Name</span>
  <span className="text-slate-700 text-[13px] font-semibold truncate w-full">{ob.houseName}</span>
@@ -325,9 +321,7 @@ export default function OfficeBearersView({ bearers, dbData, isAdminLoggedIn, on
  {/* Phone */}
  {ob.contact && (
  <div className="flex items-center gap-3 w-full bg-white/50 rounded-xl py-2 px-2.5 border border-slate-200 group-hover:bg-white group-hover:border-slate-300 group-hover:shadow-sm transition-all">
- <div className={`w-8 h-8 rounded-lg bg-emerald-100/50 text-emerald-600 flex items-center justify-center shrink-0`}>
- <Phone className="w-3.5 h-3.5" />
- </div>
+
  <div className="flex flex-col items-start min-w-0 flex-1 text-left">
  <span className="text-[9px] font-['Outfit'] font-bold text-slate-400 tracking-widest uppercase">Contact</span>
  <span className="text-slate-800 text-[13px] font-mono font-bold truncate w-full">{ob.contact}</span>

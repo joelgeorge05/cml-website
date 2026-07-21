@@ -112,9 +112,7 @@ export default function UnitsView({ units }: UnitsViewProps) {
   {/* CML Director Section */}
   <div className="relative overflow-hidden flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-rose-50/40 to-transparent border border-rose-100/60 hover:border-rose-200 hover:shadow-md hover:-translate-y-0.5 transition-all group/leader cursor-default">
   <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-rose-400 to-rose-600 opacity-0 group-hover/leader:opacity-100 transition-opacity" />
-  <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-rose-100 text-rose-500 flex items-center justify-center shrink-0 group-hover/leader:scale-110 transition-transform">
-  <User className="w-4 h-4" />
-  </div>
+  
   <div className="flex-1 flex flex-col min-w-0 z-10">
   <label className="text-[9px] uppercase font-bold tracking-widest text-rose-500/80 mb-0.5">Director</label>
   <div className="text-[13px] font-bold text-slate-800 leading-tight">
@@ -126,22 +124,12 @@ export default function UnitsView({ units }: UnitsViewProps) {
   </div>
   )}
   </div>
-  {un.directorPhone && (
-  <a
-  href={`tel:${un.directorPhone}`}
-  className="w-8 h-8 rounded-full bg-white shadow-sm border border-rose-100 flex items-center justify-center text-rose-500 hover:bg-rose-500 hover:text-white transition-colors shrink-0 z-10"
-  >
-  <Phone className="w-3.5 h-3.5" />
-  </a>
-  )}
   </div>
 
   {/* CML Joint Director Section */}
   <div className="relative overflow-hidden flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-indigo-50/40 to-transparent border border-indigo-100/60 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5 transition-all group/leader cursor-default">
   <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 to-indigo-600 opacity-0 group-hover/leader:opacity-100 transition-opacity" />
-  <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-indigo-100 text-indigo-500 flex items-center justify-center shrink-0 group-hover/leader:scale-110 transition-transform">
-  <User className="w-4 h-4" />
-  </div>
+  
   <div className="flex-1 flex flex-col min-w-0 z-10">
   <label className="text-[9px] uppercase font-bold tracking-widest text-indigo-500/80 mb-0.5">Joint Director</label>
   <div className="text-[13px] font-bold text-slate-800 leading-tight">
@@ -153,22 +141,12 @@ export default function UnitsView({ units }: UnitsViewProps) {
   </div>
   )}
   </div>
-  {un.jointDirectorPhone && (
-  <a
-  href={`tel:${un.jointDirectorPhone}`}
-  className="w-8 h-8 rounded-full bg-white shadow-sm border border-indigo-100 flex items-center justify-center text-indigo-500 hover:bg-indigo-500 hover:text-white transition-colors shrink-0 z-10"
-  >
-  <Phone className="w-3.5 h-3.5" />
-  </a>
-  )}
   </div>
 
   {/* CML President Section */}
   <div className="relative overflow-hidden flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-amber-50/40 to-transparent border border-amber-100/60 hover:border-amber-200 hover:shadow-md hover:-translate-y-0.5 transition-all group/leader cursor-default">
   <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-amber-600 opacity-0 group-hover/leader:opacity-100 transition-opacity" />
-  <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-amber-100 text-amber-500 flex items-center justify-center shrink-0 group-hover/leader:scale-110 transition-transform">
-  <User className="w-4 h-4" />
-  </div>
+  
   <div className="flex-1 flex flex-col min-w-0 z-10">
   <label className="text-[9px] uppercase font-bold tracking-widest text-amber-500/80 mb-0.5">President</label>
   <div className="text-[13px] font-bold text-slate-800 leading-tight">
@@ -180,14 +158,6 @@ export default function UnitsView({ units }: UnitsViewProps) {
   </div>
   )}
   </div>
-  {un.presidentPhone && (
-  <a
-  href={`tel:${un.presidentPhone}`}
-  className="w-8 h-8 rounded-full bg-white shadow-sm border border-amber-100 flex items-center justify-center text-amber-500 hover:bg-amber-500 hover:text-white transition-colors shrink-0 z-10"
-  >
-  <Phone className="w-3.5 h-3.5" />
-  </a>
-  )}
   </div>
   </div>
 
