@@ -97,12 +97,6 @@ export default function Footer({ setActiveTab, settings }: FooterProps) {
  <MapPin className="w-3 h-3" /> Find Parish Units
  </button>
  </li>
- <li>
- <button onClick={() => { setActiveTab('kalolsavam'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hover:text-rose-400 transition flex items-center gap-1.5 text-amber-400 hover:text-amber-300">
- <Calendar className="w-3.5 h-3.5" /> Mekhala Kalolsavam 2026-27
- <ExternalLink className="w-2.5 h-2.5 opacity-70" />
- </button>
- </li>
  </ul>
  </div>
 
