@@ -175,10 +175,7 @@ export default function Footer({ setActiveTab, settings }: FooterProps) {
  rel="noopener noreferrer"
  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-rose-400 font-mono text-[10.5px] transition-colors duration-150 font-medium"
  >
- <span className="relative flex h-1.5 w-1.5 shrink-0">
- <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
- <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500"></span>
- </span>
+
  Dev Joel
  </a>
  <span className="text-slate-800">•</span>
@@ -199,10 +196,7 @@ export default function Footer({ setActiveTab, settings }: FooterProps) {
  <div className="absolute inset-0 w-[40px] h-full bg-white/5 opacity-0 group-hover:opacity-100 pointer-events-none" style={{ animation: 'shimmer 4s infinite linear' }} />
  
  {/* Pulsing Marker */}
- <div className="relative flex h-1.5 w-1.5 shrink-0">
- <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
- <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,1)]"></span>
- </div>
+
 
  {/* Logo Image with Metallic Light-Rim Gradient wrapper */}
  <div className="rounded-full bg-gradient-to-tr from-amber-500 via-amber-300 to-rose-500 p-[1px] shadow-[0_0_6px_rgba(251,191,36,0.25)] shrink-0">

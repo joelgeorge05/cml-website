@@ -474,12 +474,7 @@ export default function Header({
  : 'text-slate-100 hover:text-white hover:bg-slate-700/60 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] border-2 border-transparent'
  }`}
  >
- {isActive && (
- <div className="relative flex h-1.5 w-1.5 shrink-0">
- <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
- <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,1)]"></span>
- </div>
- )}
+
  <span>{link.label}</span>
  </button>
  );
