@@ -228,9 +228,7 @@ export default function HomeView({
  <div className={`w-full max-w-lg ${className}`}>
  <div className="bg-white/80 border border-amber-500/30 rounded-[24px] px-5 py-4 shadow-[0_12px_40px_rgba(244,63,94,0.06),inset_0_1px_1px_rgba(255,255,255,0.6)] flex flex-row items-center justify-start gap-4 transform transition-all duration-300 hover:shadow-[0_16px_50px_rgba(244,63,94,0.12)] hover:border-amber-500/55 hover:-translate-y-0.5 cursor-default group relative overflow-hidden">
  <div className="absolute -top-10 -right-10 w-24 h-24 bg-amber-400/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700 pointer-events-none" />
- <div className="flex items-center justify-center w-[52px] h-[52px] rounded-[18px] bg-gradient-to-tr from-rose-500 via-rose-450 to-amber-400 shrink-0 shadow-lg shadow-rose-500/25 group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-300 relative z-10">
- <BookOpen className="w-5 h-5 text-white" />
- </div>
+
  <div className="flex flex-col items-start flex-1 min-w-0 z-10">
  <span className="text-[9px] font-mono font-black text-rose-600 uppercase tracking-[0.25em] mb-1">
  Study Topic
