@@ -287,10 +287,8 @@ export default function OfficeBearersView({ bearers, dbData, isAdminLoggedIn, on
  {ob.name}
  </h3>
  <div className="flex justify-center w-full">
- <span className={`px-4 py-1.5 text-[10px] font-['Outfit'] font-black tracking-[0.15em] uppercase rounded-full border shadow-xs ${
- isSpiritual 
- ? 'bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 border-amber-200/50' 
- : 'bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700 border-rose-200/50'
+ <span className={`text-[10px] sm:text-[11px] font-['Outfit'] font-black tracking-[0.15em] uppercase ${
+ isSpiritual ? 'text-amber-700' : 'text-rose-700'
  }`}>
  {ob.designation}
  </span>
